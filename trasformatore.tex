@@ -1,0 +1,677 @@
+%Layout tesina statistica
+\documentclass[a4paper]{article} 
+\usepackage[T1]{fontenc} %codifica del font
+\usepackage[utf8]{inputenc} %lettere accettate da tastiera
+\usepackage[italian]{babel} %lingua del documento
+\usepackage{microtype} %impostazioni di impaginamento
+\usepackage{graphicx} %inserimento immagini
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{amssymb}
+%\usepackage[nowrite,infront,swapnames]{frontespizio}
+%\usepackage{lipsum} %genera testo fittizio
+\usepackage{url} %per scrivere indirizzi internet
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\fancypagestyle{onlyheader}{\fancyfoot{}}
+
+\begin{document}
+
+
+	\title{\textbf{\Huge{Trasformatore}} \\ \bigskip \large{Progetto di Statistica} \\ \large{Ingegneria Fisica A.A 2019\,--\,2020}}
+	
+	\author{Simone Beretta \and Giacomo Fiorentini \and Daniele Signori} 
+	\date{}
+	
+	\maketitle
+		\begin{center}
+		\includegraphics[width=0.7\textwidth]{Logo_Politecnico_Milano} \\
+	\end{center}
+	\tableofcontents
+	\newpage
+	
+	\section{Introduzione}
+	\medskip 
+	\bigskip
+\begin{center}
+	
+	\includegraphics[width=1\textwidth]{trasf} \label{trasf}
+	\bigskip \\
+	\medskip
+	\includegraphics[width=1\textwidth]{apparato} 	
+\end{center}
+\bigskip
+\bigskip \bigskip \bigskip
+\bigskip
+Il progetto consiste in uno studio statistico sulle specifiche di un trasformatore. 
+
+Un trasformatore è una macchina elettrica che permette di alterare i valori di tensione e intensità di una corrente alternata in ingresso sfruttando i principi dell’induzione elettromagnetica. In questo progetto si è usato il trasformatore per PCB \href{https://www.wic-ltd.com/images/pdf/PCB_Transformer-Open_UK.pdf}{\emph{Walsall Transformers}}, riportato in figura a pagina \pageref{trasf}. 
+\newline \\
+Tutti i dati sono stati reperiti dai membri del progetto e sono riportati in calce per qualsiasi ulteriore analisi. Nel dettaglio, per la raccolta dati ci si è serviti dell’oscilloscopio \href{https://uk.tek.com/signal-generator/afg3000-function-generator}{\emph{Tektronix AFG 3021B}} e del tester \href{https://www.manualslib.com/products/Tektronix-Dmm870-8936646.html}{\emph{TEK DMM870}}.
+\newline \\	
+Il progetto si divide in due sezioni. Nella prima vengono analizzate le specifiche degli strumenti utilizzati. Si effettua quindi uno studio sull’efficienza del trasformatore e sull’errore introdotto dagli strumenti di misura. Nella parte conclusiva si cerca invece di trarre conclusioni più generali, che possano essere estese a tutta la famiglia dei trasformatori. In particolare, ci si concentra su come e da cosa dipenda il valore di output registrato. All’inizio di ogni sezione viene riportata una presentazione dei dati raccolti.
+Per l’elaborazione e l’analisi dei dati si è usufruito del software statistico \emph{R}.	
+	
+		
+	\section{Statistica descrittiva}
+	\medskip
+	\subsection{Scatterplot}
+	Il primo set dati, di cui riportiamo lo scatterplot, è composto da 50 misurazioni di tensione in output, associate ad un input di $100\,mV$ in corrente alternata ad una frequenza di $100\,$Hz. Il valore in ingresso rappresenta il voltaggio di picco di un’onda sinusoidale. I dati sono riportati a pagina \pageref{set1}
+	\begin{center}
+		\includegraphics[width=0.7\textwidth]{scatterplot} 
+	\end{center}
+	\subsection{Indici}
+	Dall’analisi degli indici di posizione e dispersione osserviamo come i dati siano concentrati in una zona molto ridotta della retta reale, vediamo infatti come sia esiguo il valore dell’IQR e come la varianza campionaria sia addirittura dell'ordine di $10^{-8}$. Sembra opportuno affermare che i dati siano distribuiti simmetricamente rispetto alla media campionaria.
+	\bigskip\bigskip
+	
+	\begin{center}
+		\begin{tabular}{cllr} 
+			\toprule 
+			Minimo & Massimo & \,\,\,\,Media & Varianza Campionaria \\ 
+			\midrule
+			$0.477$ & \,\,\,\,\,$0.478$ & $0.4774308$ & $7.171363\times 10^{-8}$ \\
+			\bottomrule
+		\end{tabular}
+	
+\bigskip
+\bigskip 
+\bigskip
+
+\begin{tabular}{cllr}
+	\toprule
+Primo Quartile & Mediana & Terzo Quartile &IQR \\ 
+	\midrule 
+ $0.47721$ & $0.477435$ & \,\,\,\,\,\,$0.4776075$ & $3.975\times10^{-4}$\\
+	   \bottomrule 
+\end{tabular}
+	\end{center}
+
+\bigskip 
+\bigskip
+
+\subsection{Boxplot}
+\bigskip
+Dal boxplot dei nostri dati
+\begin{center}
+	 
+	\includegraphics[width=0.75\textwidth]{boxplot} 
+
+\end{center}
+otteniamo una conferma dell'ultima affermazione sulla simmetria, vediamo infatti come non siano evidenti particolari code e notiamo che non sono presenti outlier.
+
+	\subsection{Istogramma}
+	\bigskip
+	Anche osservando l'istogramma non possiamo escludere l'ipotesi di simmetria sostenuta in precedenza. Il secondo grafico ci spinge a domandarci se i nostri dati possano essere considerati di densità normale, infatti l'istogramma (a parte qualche prevedibile imprecisione dovuta al numero non troppo elevato dei dati) sembra adattarsi piuttosto bene alla curva della densità gaussiana  $N(0.4774308\,,\,7.171363\times 10^{-8})$.
+\begin{center}
+	
+	\includegraphics[width=0.65\textwidth]{hist}  \\
+ 		\bigskip
+ \medskip
+ \smallskip
+	\includegraphics[width=0.7\textwidth]{histGauss2} 
+	
+\end{center}
+	
+
+
+
+
+	
+	\section{Test ipotesi}
+	\medskip
+		\subsection{Test di gaussianità}
+		
+	Per uno studio più approfondito dei dati ci siamo interrogati sulla loro gaussianità ed è emerso, osservando il buon allineamento del normal Q-Q plot con la relativa Q-Q line (a parte una leggera sbavatura nella coda di sinistra) e l'elevato p-value del test di Shapiro-Wilk (pari a $22.71\%$), che i nostri dati possono essere considerati di densità gaussiana.
+	\label{gauss}
+	\begin{center}
+		\includegraphics[width=0.75\textwidth]{normal_qqplot_primoset} \\
+		
+		\bigskip
+		\medskip
+		\smallskip
+		
+		\includegraphics[width=0.75\textwidth]{shapiro_test_primoset}
+	\end{center}
+
+	\subsection{Test sulla media}
+	
+	Vogliamo testare l'esattezza del trasformatore utilizzato, in particolare vogliamo
+		\begin{enumerate} 
+			\item verificare il principio di conservazione;
+			\item stabilire se il trasformatore lavora con un rendimento maggiore del $70\%$.
+		\end{enumerate}
+	
+	Per quanto riguarda il primo punto dobbiamo verificare che il valore medio di output da noi misurato sia minore o uguale al valore che si otterrebbe in condizioni ideali.
+	
+	\begin{center}
+		\includegraphics[width=0.6\textwidth]{IMG_1847} 
+	\end{center}
+	 Leggiamo sul nostro trasformatore che ad un input efficace di $12\,V$ dovrebbe corrispondere, nominalmente, un output efficace di $115\,V$. Chiamando $\mu_0$ il valore nominale che si dovrebbe ottenere con un input sinusoidale con un picco di $100\,mV$ deve valere la proporzione \[12:115=\frac{0.100}{\sqrt{2}}:\mu_0\] dalla quale si ricava $\mu_0=0.6776$. 
+	
+	Eseguiamo ora un test sulla media da noi ricavata; siamo disposti a rifiutare il principio di conservazione solo se avremo forti evidenze per farlo, il nostro test sarà dunque \[\begin{cases}
+	H_0: \bar{x}&\le\mu_0 \\	H_1: \bar{x}&>\mu_0
+	\end{cases}
+	\]
+	
+	Il nostro campione ha distribuzione normale e varianza incognita, dunque rifiuto $H_0$ se $T_0 > t_{1-\alpha}(49)$ con $T_0:= \frac{\bar{x}-\mu_0}{S_{x_{50}}}\sqrt{50} $.
+	
+	 Eseguendo questo test con \emph{R}
+	\begin{center}
+		
+		\includegraphics[width=0.75\textwidth]{ttest_greater} 
+		
+	\end{center}
+	 otteniamo un p-value di $1$ così alto che non possiamo in alcun modo rifiutare $H_0$.
+	 
+	 Vogliamo ora verificare che il rendimento sia maggiore del $70\%$, affermazione che si traduce nel seguente test d'ipotesi 
+	\[\begin{cases}
+	H_0: \bar{x}&\le\mu_1 \\	H_1: \bar{x}&>\mu_1
+	\end{cases}
+	\]
+	Con $\mu_1=70\%\,\mu_0=0.47432$.
+	
+	Come si può leggere dalle seguenti righe il p-value di questo t-test è persino inferiore a $2.2 \times 10^{-16}$ per cui rifiutiamo $H_0$ e abbiamo la certezza che il nostro trasformatore abbia un rendimento maggiore del $70\%$.
+		\begin{center}
+		
+		\includegraphics[width=0.75\textwidth]{ttest_70} 
+		
+	\end{center}
+
+Tale rendimento, pur essendo abbastanza distante dalle condizioni di idealità, risulta comunque accettabile se si considera di aver usato un trasformatore con nucleo in aria, soggetto quindi a grosse perdite di induttanza, ad un voltaggio lontano da quello di massima efficienza che si aggira intorno ai $12\,V$.
+%	vogliamo verificare che il principio di conservazione sia rispettato (e quindi in output si deve trovare un valore inferiore a quello teorico ideale) e in seguito stabilire se ha un rendimento superiore al 70\%, soglia da noi ritenuta accettabile per questo esperimento.
+	
+	
+	
+	
+	
+	
+	
+%	 leggiamo su di esso che ad un input efficace di $12\,V$ dovrebbe corrispondere, nominalmente, un output efficace di $115\,V$. Abbiamo già ricavato in precedenza che il nostro input efficace è di $0.0353\,V$ mentre la media dell'output efficace è $\bar{y}=0.338\,V$.
+%	Se il trasformatore lavorasse come dichiarato dal produttore il valore atteso in output che chiameremo $\mu_0$ dovrebbe soddisfare la proporzione $12:115=0.0353:\mu_0$
+%	ottenendo così $\mu_0=0.3383$.
+	
+%	Eseguiamo ora un test d'ipotesi per vedere se il produttore ha dichiarato il vero. Ovviamente la nostra ipotesi nulla sarà che il produttore sia onesto in quanto non vorremmo fare una brutta figura accusandolo quando in realtà tutto era corretto.
+
+%\[\begin{cases}
+%H_0: \bar{y}=\mu_0 \\	H_1: \bar{y}\ne\mu_0
+%\end{cases}
+%\]
+%	Per il nostro campione la varianza è incognita e sappiamo essere di distribuzione normale, dunque rifiuto $H_0$ se $\lvert T_0 \rvert \ge t_{1-\alpha/2}(49)$ con $\lvert T_0 \rvert := \frac{\bar{y}-\mu_0}{S_{y_{50}}}\sqrt{50} $
+
+%Inserendo i dati si ricava $\lvert T_0 \rvert=11.22$
+
+
+
+	
+	
+	\section{Intervalli di confidenza}
+	\medskip
+	\subsection{Media}
+	\subsubsection*{\textit{Intervallo di confidenza per valore atteso in output}}
+	Vogliamo costruire un intervallo di confidenza per la media del valore di output del nostro campione che sappiamo essere normale per i risultati di \ref{gauss} e di cui non ci è nota la varianza. La nostra media apparterrà al seguente intervallo con confidenza di livello $\gamma$. \[\mu \in \biggl(\bar{x}_{50} - t_\frac{1+\gamma}{2}(49)\frac{S_{x_{50}}}{\sqrt{50}} \,,\, \bar{x}_{50} + t_\frac{1+\gamma}{2}(49)\frac{S_{x_{50}}}{\sqrt{50}} \biggr)\]
+	Sostituendo $95\%$ a $\gamma$ si ottiene \[\mu \in \bigl(0.4773547 \,,\, 0.4775069\bigr)\] 
+	L'intervallo è stato costruito sfruttando le seguenti istruzioni sul software \emph{R}:
+	\begin{center}
+		
+		\includegraphics[width=0.75\textwidth]{IC95media} 
+
+	\end{center}
+
+\medskip
+	
+	\subsection{Varianza}
+	\subsubsection*{\textit{Intervallo di confidenza per varianza dei valori in output dovuta agli strumenti di misurazione}}
+	Sapendo di lavorare su un campione di distribuzione gaussiana possiamo trovare un intervallo di confidenza anche per la varianza. A livello $\gamma$ l'intervallo di confidenza per la varianza sarà \[\sigma^2 \in \Biggl(\frac{49 S_{x_{50}}^2}{\chi_\frac{1+\gamma}{2}^2(49)} \,,\, \frac{49 S_{x_{50}}^2}{\chi_\frac{1-\gamma}{2}^2(49)} \Biggr)\] sostituendo i valori trovati in precedenza e a $\gamma$ $95\%$ si ottiene \[\sigma^2 \in \bigl(50.04 \times 10^{-9} \,,\, 111.36 \times 10^{-9}\bigr)\] ottenuto con le seguenti istruzioni in \emph{R}: \\
+	
+	\begin{center}
+		
+		\includegraphics[width=0.7\textwidth]{IC95varianza} 
+		
+	\end{center}
+	
+																
+																
+	%\subsubsection*{\textit{Intervallo di confidenza per valore atteso efficace in output}}
+%Se invece vogliamo costruire un intervallo di confidenza, sempre al $95\%$, per la media del valore \emph{efficace} ottenuto in output, sapendo che $y_i=\frac{1}{\sqrt{2}}{x_i}$ ricaviamo (chiamando $\bar{x}$ la media del valore di picco e $\bar{y}$ la media del valore efficace) $\bar{y}=\frac{1}{\sqrt{2}}\bar{x}$  e ${S_{y_{50}}=\frac{1}{\sqrt{2}}S_{x_{50}}}$ con $S_{x_{50}}$ e $S_{y_{50}}$ rispettivamente la deviazione standard campionaria del valore di picco e del valore efficace e dunque il nuovo intervallo di confidenza sarà: \[\mu_{efficace} \in \bigl(0.3375407 \,,\, 0.3376484\bigr)\]
+%ottenuto analogamente al caso in precedenza
+
+%	\subsubsection*{\textit{Intervallo di confidenza per varianza dei valori efficaci in output}}
+%Considerando come in precedenza anche i valori efficaci si ottiene per la varianza del campione di questi ultimi 
+%\[\sigma_{efficace}^2 \in \bigl(25.02 \times 10^{-9} \,,\, 55.68 \times 10^{-9}\bigr)\] come si poteva immaginare ricordando la quadraticità della varianza.
+
+
+	\section{Regressione lineare}
+	\subsection{Presentazione dei dati}
+	In questa ultima sezione del nostro progetto ci dedichiamo ad analizzare la relazione tra i dati inseriti in input e i relativi output. In particolare, sarà di nostro interesse fare inferenza sull’effettivo ratio di trasformazione e capire da cosa, e come, dipende. 
+	
+	Per farlo abbiamo raccolto il set di dati leggibile in fondo a questa sezione (pagina \pageref{set2}). Per ogni misurazione sono presenti il voltaggio d’ingresso con la relativa forma d’onda e l’output registrato.
+	
+	
+	
+	
+	
+
+\subsection{Modello semplice}
+Come primo modello proponiamo una dipendenza dell’output solo dal voltaggio in ingresso, senza considerare la forma d’onda associata.
+\begin{center}
+	
+	\includegraphics[width=1\textwidth]{Modello1} 
+	
+\end{center}
+\subsubsection*{\textit{Analisi dei residui}}
+Prima di trarre qualsiasi conclusione analizziamo i residui. Seguono il normal Q-Q plot, lo scatterplot e il test di Shapiro-Wilk.
+\begin{center}
+	
+	\includegraphics[width=0.8\textwidth]{qqplotres1} 
+	\newline
+	\newline
+	\newline
+	\newline
+	\newline
+\footnotesize{\textbf{Scatterplot residui}}
+
+	\includegraphics[width=0.75\textwidth]{plotres1}
+\bigskip	\\
+\medskip
+\medskip
+	\includegraphics[width=0.7\textwidth]{Shapiro_modello1} 
+	 
+\end{center}
+
+Come possiamo osservare dallo scatterplot i residui mostrano una marcatissima eteroschedasticità. Anche il  normal Q-Q plot mostra che i residui non possono essere considerati gaussiani, come confermato dal bassissimo valore del p-value del test di Shapiro-Wilk. In entrambi i grafici notiamo una marcata presenza di tre andamenti separati, con ogni probabilità dovuti alle tre diverse forme d’onda. Scartiamo il modello semplice.
+
+	\subsection{Modello categorico}
+	
+	Dal seguente grafico appare estremamente evidente che ci sia una dipendenza non solo dal voltaggio di input, ma anche dalla forma  d'onda della tensione.
+	
+	\begin{center}
+        \footnotesize{\textbf{Scatterplot dati}}
+		\includegraphics[width=1\textwidth]{plotsubset2} 
+		
+	\end{center}
+	
+	Proponiamo dunque un modello che tenga conto anche della forma d'onda, rappresentata da una variabile categorica.
+	
+	\begin{center}
+		
+		\includegraphics[width=1\textwidth]{Modello2} 
+		
+	\end{center}
+
+	Da questa schermata riassuntiva possiamo trarre le prime considerazioni. Il modello è globalmente significativo come possiamo notare dal p-value del F test, inoltre la totalità della variabilità è spiegata dal modello lineare (R-squared\,=\,1). Analizzando i valori stimati delle intercette troviamo che si apprestano tutte vicino allo zero, come potevamo aspettarci per considerazioni fisiche. I relativi test di significatività ci porterebbero, in due casi su tre, a rifiutare l’ipotesi che siano nulle, ma questo è dovuto al bassissimo errore standard. Abbiamo inoltre forte evidenza del fatto che i coefficienti delle rette dei minimi quadrati rispettivi ad ogni forma d’onda siano diversi tra di loro, come possiamo osservare dai valori stimati e dai p-value dei relativi test di significatività.
+	\newline \\
+	Non accontentandoci di questi risultati, passiamo all’analisi di ogni forma d’onda singolarmente.
+	\newpage
+	\subsubsection{Onda sinusoidale}
+	\bigskip 
+	\bigskip 
+	\begin{center}
+		
+		\includegraphics[width=1\textwidth]{inputsin} 
+		\bigskip \\
+		\includegraphics[width=0.8\textwidth]{plotsin}
+	\end{center}
+	Analizzando la subset relativa agli input con forma d’onda sinusoidale, costruiamo un modello lineare del tipo $Y=\beta_0 + \beta_1 picco + \epsilon$ con $\epsilon\, \mathtt{\sim}\, N(0, \sigma^2)$
+	
+	\begin{center}
+		
+		\includegraphics[width=0.85\textwidth]{summary_sinusoidale} 
+		
+	\end{center}
+
+	Notiamo che anche in questo caso il modello è globalmente significativo e la variabilità è totalmente spiegata dal modello lineare. Le nostre considerazioni precedenti sull’intercetta rimangono valide, nonostante il basso p-value dovuto al minimo errore standard. Abbiamo inoltre forte evidenza per $\beta_1\ne0$, aspettiamo però l’analisi delle altre due forme d’onda prima di trarre conclusioni sul significato del relativo valore stimato.
+	
+	\subsubsection*{\textit{Analisi dei residui}}
+	
+	Dall’analisi dei residui
+		\begin{center}
+		
+		\includegraphics[width=0.75\textwidth]{plotressin} 
+		
+	\end{center}
+	Notiamo una disposizione “a nuvola” e la presenza di solo due punti di poco al di sopra del valore 2. Concludiamo che i residui sono indipendenti e identicamente distribuiti.
+	
+	Seguono il test di Shapiro-Wilk e il normal Q-Q Plot 
+	\bigskip \\
+	\begin{center}
+		
+		 \includegraphics[width=0.675\textwidth]{shapiro_sinusoidale} 
+		\bigskip \\
+		
+		\includegraphics[width=0.85\textwidth]{qqnormsin}
+	\end{center}
+che ci portano ad accettare l'ipotesi di gaussianità.
+
+	\subsubsection{Onda quadra}
+	\bigskip 
+	\bigskip 
+	\begin{center}
+		
+		\includegraphics[width=1\textwidth]{inputqua} 
+		\bigskip \\
+		\includegraphics[width=0.8\textwidth]{plotqua}
+	\end{center}
+	Lavorando con la subset relativa ai dati con forma d’onda quadra otteniamo, allo stesso modo, i seguenti risultati. 
+	\begin{center}
+		
+		\includegraphics[width=0.85\textwidth]{summary_quadra} 
+		
+	\end{center}
+Il modello è globalmente significativo e con varianza residua praticamente nulla. Per gli stessi argomenti riportati nel caso di onda sinusoidale, l’intercetta è considerabile nulla. 
+
+	\subsubsection*{\textit{Analisi dei residui}}
+I residui sono omoschedastici e sono presenti solo due outlier che non creano problemi al modello. L’ipotesi di gaussianità dei residui è confermata.
+	\begin{center}
+		\includegraphics[width=0.85\textwidth]{plotresqua} 
+		\bigskip \\
+		
+		\includegraphics[width=0.85\textwidth]{qqnormqua} 
+		\bigskip \\
+		\bigskip
+		\includegraphics[width=0.675\textwidth]{shapiro_quadra} 
+	\end{center}
+	
+	\newpage
+	\subsubsection{Onda triangolare}
+	Procediamo con l’ultimo subset di dati relativo alla forma d’onda triangolare.
+	\bigskip 
+	\bigskip 
+	\begin{center}
+		
+		\includegraphics[width=1\textwidth]{inputtri} 
+		\bigskip \\
+		\includegraphics[width=0.8\textwidth]{plottri}
+	\end{center}
+	
+	\begin{center}
+		
+		\includegraphics[width=0.85\textwidth]{summary_triangolare} 
+		
+	\end{center}
+	Sempre procedendo con lo stesso modello otteniamo conclusioni simili. Significatività e bontà del modello sono confermate, inoltre l'intercetta è assumibile pari a $0$.
+	
+	\subsubsection*{\textit{Analisi dei residui}}
+	I residui possono essere considerati indipendenti, identicamente distribuiti e gaussiani. Anche in questo caso troviamo due outlier che diventano innocui sulla totalità dei dati.
+	\begin{center}
+		\includegraphics[width=0.85\textwidth]{plotrestri} 
+		\bigskip \\
+		\includegraphics[width=0.85\textwidth]{qqnormtri} 
+		\bigskip \\
+		\includegraphics[width=0.675\textwidth]{shapiro_triangolare} 
+	\end{center}
+	
+		\subsection{Osservazioni sui valori stimati dei regressori}
+		Dallo studio dei tre modelli è possibile osservare la presenza di tre diversi valori stimati per i parametri associati al voltaggio in ingresso. Ci chiediamo quindi se sia presente qualche relazione che li leghi. Ricordando che i valori di tensione in input sono espressi come voltaggi di picco proviamo a moltiplicare i parametri ottenuti per ciascuna onda con il relativo valore di passaggio a volt efficaci.
+		\bigskip
+		\begin{center}
+			\begin{tabular}{cllr} 
+				\toprule
+			Forma & $\,\,\,\,\,\,\,\,\,\,\hat{\beta_1}$ & Fattore di conversione & Parametro finale \\
+			\midrule
+			Sinusoidale & $5.0440766$ & \hspace{1.1cm}$\sqrt{2}$ & $7.1334015$ \\
+			Quadra & $7.11123185$ & \hspace{1.1cm}$\,\,\,\,\,1$ & $7.11123185$ \\
+			Triangolare & $4.0661653$ & \hspace{1.1cm}$\sqrt{3}$ & $7.0428048$ \\	
+			\bottomrule
+			\end{tabular}
+		\end{center}
+	\bigskip
+	Notiamo quindi che il rapporto di trasformazione dipende solo dal valore efficace di tensione in input. Prendendo per esempio i dati con forma d’onda quadra in ingresso calcoliamo un intervallo di confidenza sull’effettivo rapporto di trasformazione.
+	\[\beta_1 \in \biggl(\hat{\beta_1}-t_\frac{1+\gamma}{2}(n-k-1)se(\hat{\beta_1})\,,\,\hat{\beta_1}+t_\frac{1+\gamma}{2}(n-k-1)se(\hat{\beta_1})\biggr)\]
+	da cui si ricava, a livello $\gamma=95\%$, $\beta_1 \in (7.10812584\,,\,7.11651116)$
+	
+	
+	\subsection{Conclusioni regressione}
+	
+	Dall’analisi effettuata abbiamo ricavato due possibili applicazioni di questo studio empirico.
+	
+	\subsubsection*{\textit{Inferenza sulla forma d’onda}}
+	
+	Noto il ratio effettivo del trasformatore, pari al rapporto delle spire nel caso di condizioni ideali, tramite un set di misurazioni di voltaggi in ingresso e uscita è possibile ricavare il coefficiente della retta input-output. Il rapporto tra il ratio di trasformazione noto e la pendenza della retta ricavata restituisce il fattore di passaggio tra voltaggio di picco e voltaggio efficace dell’onda utilizzata. Confrontando questo valore con quelli tabulati avremo presto ottenuta la relativa forma. Chiaramente, maggiore è il numero di misurazioni più sicurezza e precisione avremo sul fattore di passaggio. \newline ATTENZIONE: è fondamentale conoscere se i valori in input sono di picco o picco-picco. Nel caso di input già trasformati in valori efficaci non ci sarà possibile stabilire alcunché sulla forma d’onda.
+	
+	\subsubsection*{\textit{Inferenza sull’effettivo rapporto di trasformazione}}
+	
+	Ragioniamo con ipotesi inverse rispetto al caso precedente. Supponiamo noti forma d’onda e un set di misurazioni di voltaggio in entrata e uscita dal trasformatore. Calcoliamo i valori di input in valori efficaci e svolgiamo l’analisi regressiva vista in precedenza. Il coefficiente ricavato corrisponde all’effettivo rapporto di trasformazione. Nel caso fosse noto il rapporto delle spire sarebbe possibile calcolare anche l’efficienza del trasformatore utilizzato.  
+	
+	
+	
+	
+	
+	
+	
+	\newpage
+	\thispagestyle{empty}
+	\subsubsection*{\textit{Primo set dati}}	
+	\begin{center}
+		\label{set1}
+		\begin{tabular}{|c|lr|}
+			\toprule
+			Num	&	Input picco [$mV$]	&	Output efficace [$mV$] 	\\
+			\midrule
+			1	&	100	&	477.48	\\
+			2	&	100	&	477.58	\\
+			3	&	100	&	477.8	\\
+			4	&	100	&	477.25	\\
+			5	&	100	&	477.34	\\
+			6	&	100	&	477.51	\\
+			7	&	100	&	477.5	\\
+			8	&	100	&	477.76	\\
+			9	&	100	&	477.7	\\
+			10	&	100	&	477.57	\\
+			11	&	100	&	477.9	\\
+			12	&	100	&	478	\\
+			13	&	100	&	477.6	\\
+			14	&	100	&	477.62	\\
+			15	&	100	&	477.47	\\
+			16	&	100	&	477.1	\\
+			17	&	100	&	477.77	\\
+			18	&	100	&	477.9	\\
+			19	&	100	&	477.53	\\
+			20	&	100	&	477.31	\\
+			21	&	100	&	477.4	\\
+			22	&	100	&	477.32	\\
+			23	&	100	&	477.7	\\
+			24	&	100	&	477.4	\\
+			25	&	100	&	477.21	\\
+			26	&	100	&	477.3	\\
+			27	&	100	&	477.47	\\
+			28	&	100	&	477.61	\\
+			29	&	100	&	477.9	\\
+			30	&	100	&	477.6	\\
+			31	&	100	&	477.54	\\
+			32	&	100	&	477.08	\\
+			33	&	100	&	477.28	\\
+			34	&	100	&	477.4	\\
+			35	&	100	&	477.7	\\
+			36	&	100	&	477.18	\\
+			37	&	100	&	477.07	\\
+			38	&	100	&	477.19	\\
+			39	&	100	&	477	\\
+			40	&	100	&	477.2	\\
+			41	&	100	&	477.4	\\
+			42	&	100	&	477.3	\\
+			43	&	100	&	477.63	\\
+			44	&	100	&	477.11	\\
+			45	&	100	&	477.53	\\
+			46	&	100	&	477	\\
+			47	&	100	&	477	\\
+			48	&	100	&	477.21	\\
+			49	&	100	&	477.07	\\
+			50	&	100	&	477.05	\\
+			\bottomrule
+		\end{tabular}
+	\end{center}
+
+	
+		\subsubsection*{\textit{Secondo set dati}}
+	
+	\begin{center}
+		\label{set2}
+		\begin{tabular}{|c|llr|} 
+			\toprule
+			Num	&Input picco [V]&	Forma&	Output [V]\\
+			\midrule
+			1	&	0.1	&	Sinusoidale	&	0.4684	\\
+			2	&	0.11	&	Sinusoidale	&	0.519	\\
+			3	&	0.12	&	Sinusoidale	&	0.5682	\\
+			4	&	0.13	&	Sinusoidale	&	0.6164	\\
+			5	&	0.14	&	Sinusoidale	&	0.668	\\
+			6	&	0.15	&	Sinusoidale	&	0.7183	\\
+			7	&	0.16	&	Sinusoidale	&	0.7671	\\
+			8	&	0.17	&	Sinusoidale	&	0.8173	\\
+			9	&	0.18	&	Sinusoidale	&	0.867	\\
+			10	&	0.19	&	Sinusoidale	&	0.9192	\\
+			11	&	0.2	&	Sinusoidale	&	0.968	\\
+			12	&	0.21	&	Sinusoidale	&	1.0225	\\
+			13	&	0.22	&	Sinusoidale	&	1.0713	\\
+			14	&	0.23	&	Sinusoidale	&	1.1259	\\
+			15	&	0.24	&	Sinusoidale	&	1.1763	\\
+			16	&	0.25	&	Sinusoidale	&	1.2241	\\
+			17	&	0.26	&	Sinusoidale	&	1.2758	\\
+			18	&	0.27	&	Sinusoidale	&	1.326	\\
+			19	&	0.28	&	Sinusoidale	&	1.3759	\\
+			20	&	0.29	&	Sinusoidale	&	1.426	\\
+			21	&	0.3	&	Sinusoidale	&	1.4765	\\
+			22	&	0.31	&	Sinusoidale	&	1.5265	\\
+			23	&	0.32	&	Sinusoidale	&	1.5767	\\
+			24	&	0.33	&	Sinusoidale	&	1.6271	\\
+			25	&	0.34	&	Sinusoidale	&	1.6774	\\
+			26	&	0.35	&	Sinusoidale	&	1.7275	\\
+			27	&	0.36	&	Sinusoidale	&	1.7767	\\
+			28	&	0.37	&	Sinusoidale	&	1.8279	\\
+			29	&	0.38	&	Sinusoidale	&	1.8781	\\
+			30	&	0.39	&	Sinusoidale	&	1.9286	\\
+			31	&	0.4	&	Sinusoidale	&	1.9785	\\
+			\midrule
+			32	&	0.1	&	Quadra	&	0.6882	\\
+			33	&	0.11	&	Quadra	&	0.7577	\\
+			34	&	0.12	&	Quadra	&	0.8283	\\
+			35	&	0.13	&	Quadra	&	0.899	\\
+			36	&	0.14	&	Quadra	&	0.9701	\\
+			37	&	0.15	&	Quadra	&	1.0414	\\
+			38	&	0.16	&	Quadra	&	1.1123	\\
+			39	&	0.17	&	Quadra	&	1.1843	\\
+			40	&	0.18	&	Quadra	&	1.2542	\\
+			41	&	0.19	&	Quadra	&	1.3257	\\
+			42	&	0.2	&	Quadra	&	1.397	\\
+			43	&	0.21	&	Quadra	&	1.4689	\\
+			44	&	0.22	&	Quadra	&	1.5395	\\
+			45	&	0.23	&	Quadra	&	1.6112	\\
+			
+		\end{tabular}
+	\end{center}	
+	
+	\begin{center}
+		
+		\begin{tabular}{|c|llr|} 
+			\toprule
+			Num	&Input picco [V]&	Forma&	Output [V]\\
+			\midrule
+			46	&	0.24	&	Quadra	&	1.6823	\\
+			47	&	0.25	&	Quadra	&	1.7487	\\
+			48	&	0.26	&	Quadra	&	1.8228	\\
+			49	&	0.27	&	Quadra	&	1.8943	\\
+			50	&	0.28	&	Quadra	&	1.9654	\\
+			51	&	0.29	&	Quadra	&	2.0367	\\
+			52	&	0.3	&	Quadra	&	2.1081	\\
+			53	&	0.31	&	Quadra	&	2.1793	\\
+			54	&	0.32	&	Quadra	&	2.2507	\\
+			55	&	0.33	&	Quadra	&	2.3222	\\
+			56	&	0.34	&	Quadra	&	2.3932	\\
+			57	&	0.35	&	Quadra	&	2.4648	\\
+			58	&	0.36	&	Quadra	&	2.5347	\\
+			59	&	0.37	&	Quadra	&	2.6065	\\
+			60	&	0.38	&	Quadra	&	2.6781	\\
+			61	&	0.39	&	Quadra	&	2.7492	\\
+			62	&	0.4	&	Quadra	&	2.8204	\\
+			\midrule
+			63	&	0.1	&	Triangolare	&	0.3847	\\
+			64	&	0.11	&	Triangolare	&	0.4226	\\
+			65	&	0.12	&	Triangolare	&	0.463	\\
+			66	&	0.13	&	Triangolare	&	0.5033	\\
+			67	&	0.14	&	Triangolare	&	0.5435	\\
+			68	&	0.15	&	Triangolare	&	0.5843	\\
+			69	&	0.16	&	Triangolare	&	0.6256	\\
+			70	&	0.17	&	Triangolare	&	0.6662	\\
+			71	&	0.18	&	Triangolare	&	0.7071	\\
+			72	&	0.19	&	Triangolare	&	0.7473	\\
+			73	&	0.2	&	Triangolare	&	0.7882	\\
+			74	&	0.21	&	Triangolare	&	0.8295	\\
+			75	&	0.22	&	Triangolare	&	0.8706	\\
+			76	&	0.23	&	Triangolare	&	0.911	\\
+			77	&	0.24	&	Triangolare	&	0.9517	\\
+			78	&	0.25	&	Triangolare	&	0.9914	\\
+			79	&	0.26	&	Triangolare	&	1.0326	\\
+			80	&	0.27	&	Triangolare	&	1.0733	\\
+			81	&	0.28	&	Triangolare	&	1.1139	\\
+			82	&	0.29	&	Triangolare	&	1.1545	\\
+			83	&	0.3	&	Triangolare	&	1.1955	\\
+			84	&	0.31	&	Triangolare	&	1.2364	\\
+			85	&	0.32	&	Triangolare	&	1.2768	\\
+			86	&	0.33	&	Triangolare	&	1.3175	\\
+			87	&	0.34	&	Triangolare	&	1.3586	\\
+			88	&	0.35	&	Triangolare	&	1.3991	\\
+			89	&	0.36	&	Triangolare	&	1.4393	\\
+			90	&	0.37	&	Triangolare	&	1.4763	\\
+			91	&	0.38	&	Triangolare	&	1.5209	\\
+			92	&	0.39	&	Triangolare	&	1.5615	\\
+			93	&	0.4	&	Triangolare	&	1.6023	\\
+			\bottomrule
+		\end{tabular}
+	\end{center}
+
+
+
+
+	
+	
+	
+\newpage
+	%bibliografia
+	\begin{thebibliography}{10}
+		
+		\subsection*{\textit{Siti Web consultati}}
+		
+		\bibitem{Marrazzo:picco-picco}
+		Marrazzo Antonio, 
+		\emph{Volt Efficaci, Volt Picco-Picco, Volt di Picco} \\
+		\url{http://www.marrazzoantonio.altervista.org/alterpages/files/volteffpicppicovoltpico.pdf}.
+		
+		\bibitem{Strumento}
+		\emph{Multimetri a vero valore efficace} \\
+		\url{https://www.strumentazioneelettronica.it/tecnologie/analog-test/multimetri-a-vero-valore-efficace-20081231162/}
+		
+		\bibitem{Wiki-aria}
+		\emph{Nucleo in aria} \\
+		\url{https://it.wikipedia.org/wiki/Trasformatore#Nucleo_in_aria}
+		
+		\bibitem{Oscillo}
+		\emph{Oscilloscopio Tektronix AFG 3021B} \\
+		\url{https://uk.tek.com/signal-generator/afg3000-function-generator}
+		
+		\bibitem{Test}
+		\emph{Tester TEK DMM870} \\
+		\url{https://www.manualslib.com/products/Tektronix-Dmm870-8936646.html}
+		
+		\bibitem{Trasformatore}
+		\emph{Walsall Transformers} \\
+		\url{https://www.wic-ltd.com/images/pdf/PCB_Transformer-Open_UK.pdf}
+		
+		
+		\subsection*{\textit{Testi consultati}}
+		
+		\bibitem{Libro}
+		James S. Walker (2016), \emph{FISICA 3. Modelli teorici e problem solving} \\
+		
+	\end{thebibliography}
+
+\end{document}
+
+
+
+	%Se $f$ è continua e 
+%	allora 
+%	\begin{equation}
+%	 F’(x)=f(x) 
+%	\end{equation}
+
+%	I dati in input sono picco picco 200 mV, dunque il loro voltaggio efficace è $10/\sqrt2=0.07071 \,V$, mentre in output si ottiene direttamente il valore efficace con media 477.43 mV. Otteniamo così un rapporto di 6.752, inferiore a quello nominale di 9.583, ma comunque accettabile considerando di aver usato un trasformatore ad aria, soggetto quindi a grosse perdite di induttanza, ad un voltaggio lontano da quello di massima efficienza che si aggira intorno ai 12 V.
