@@ -1,0 +1,1016 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Riassunto del corso di Fondamenti di Automatica tenuto dal prof. Fabio Dercole al Politecnico di %Milano per il corso di  Ingegneria Fisica A.A. 2020/21.
+%Autore: Giacomo Fiorentini
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\documentclass[a4paper]{article} 
+\usepackage[T1]{fontenc} 								%codifica del font
+\usepackage[utf8]{inputenc}								%lettere accettate da tastiera
+\usepackage[italian]{babel} 							%lingua del documento
+\usepackage{microtype} 									%impostazioni di impaginamento
+\usepackage[a4paper,left=3.5cm,right=3.5cm, top=2.5cm, bottom=3cm]{geometry}  	%margini pagina, default 4.4cm
+\usepackage{graphicx} 									%inserimento immagini
+\usepackage{subfig}										%immagini a fianco con \subfloat{}
+\usepackage{booktabs}       							%inserimento tabelle
+\usepackage{amsmath} 									%matematica
+\usepackage{amssymb} 									%matematica
+\usepackage{url} 										%per scrivere indirizzi internet
+\usepackage{hyperref}									%riferimenti testuali
+\usepackage{xcolor}										%uso dei colori
+\usepackage{multicol}									%scrivere su più colonne
+\usepackage{fancyhdr}
+\usepackage{float}										%posizionamento immagini con opzione H
+\usepackage{multirow}									%creazione di tabelle multiriga
+\fancypagestyle{onlyheader}{\fancyfoot{}}
+\newcommand{\minitab}[2][l]{\begin{tabular}#1 #2\end{tabular}} %nuovo comando per le tabelle su più righe
+
+\begin{document}
+	
+	
+	\title{\textbf{\Huge{Fondamenti di Automatica}} \\ \bigskip   \large{Ingegneria Fisica A.A 2020\,--\,2021\\Appunti del corso tenuto dal Prof. Dercole Fabio}}
+	
+	\author{Giacomo Fiorentini} 
+	\date{}
+	
+	\maketitle
+	\begin{center}
+		\includegraphics[width=0.7\textwidth]{Logo_Politecnico_Milano} \\
+	\end{center}
+	\tableofcontents
+	\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	\section{Modello in spazio di stato}
+	Questo primo metodo di espressione dei sistemi dinamici \emph{lineari} è la rappresentazione in \textbf{spazio di stato}, chiamato a volte "modello interno". Vengono definite \emph{n} variabili chiamate appunto di stato alle quali vengono associate \emph{n} equazioni contenenti le altre variabili. In particolare se il sistema è a tempo continuo ogni equazione descrive la derivata della variabile di stato al tempo \emph{t}, mentre se si tratta un caso a tempo discreto l'equazione descrive la variabile di stato al tempo \emph{t+1}. Una volta scritte le equazioni che dipenderanno dalla situazione fisica modellizzata si può costruire la matrice \emph{A} in cui $a_{ij}$ è il coefficiente della variabile di stato j-esima nell'i-esima equazione. Introducendo l'operatore \textbf{\emph{p}} che a tempo continuo indica la derivata, mentre a tempo discreto indica il ritardo \emph{+1} può essere definita l'equazione di stato \[px=Ax+bu\] dove con \emph{u} si è indicato l'ingresso del sistema e con \emph{b} il vettore dei coefficienti che moltiplicano l'ingresso in ogni equazione della singola variabile di stato.
+	\newline \\
+	Anche l'uscita del sistema è descritta da un'equazione: \[y=c^Tx+du\] con \emph{c} e \emph{d} che assumono significati analoghi alle matrici di prima. Se il coefficiente $d\ne0$ il sistema si dice \textbf{improprio}.
+	\newline \\
+	Le seguenti matrici descrivono ad esempio il sistema di due masse attaccate da una molla tra loro e con un muro, sotto l'azione di una forza F e della gravità g.
+\bigskip \\	A=
+	$\begin{vmatrix}
+		0 & 0 & 1 & 0 \\
+		0 & 0 & 1 & 1 \\
+		-2k/m_1 & k/m_1 & -h/m_1 & 0 \\
+		k/m_2 & -k/m_2 & 0 & -h/m_2 				
+	\end{vmatrix}$
+	
+\bigskip 	b=
+	$\begin{vmatrix}
+	0 & 0 \\
+	0 & 0 \\
+	0 & 1 \\
+	1/m_2 & 1 \\
+	\end{vmatrix}
+	$
+	
+	
+\bigskip 	$c^T$=
+	$\begin{vmatrix}
+	1 & 0 & 0 & 0 \\
+	0 & 1 & 0 & 0 
+	\end{vmatrix}
+	$
+	
+\bigskip 	d=
+	$\begin{vmatrix}
+	0 & 0 \\
+	0 & 0
+	\end{vmatrix}
+	$
+	
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%	
+	\section{Modello ARMA e funzione di trasferimento}
+	Un secondo modo per rappresentare un sistema dinamico lineare è il cosiddetto \textbf{modello ARMA}, chiamato a volte "modello esterno" che si esprime \[y(t)=\sum_{i=1}^{n}(-\alpha_i)y(t-i)+\sum_{i=0}^{n}\beta_iu(t-i)\] per il tempo discreto, mentre con le derivate per il tempo continuo. Se $\beta_0\ne0$ il sistema è \textbf{improprio}. Ricordando il significato dell'operatore \emph{p} il modello ARMA può essere scritto nella forma generale \[D(p)y(t)=N(p)u(t)\] 
+	dove il polinomio $D(p)$ è monico. Se D e N sono primi tra loro il modello si dice \textbf{di trasferimento}. \\ In ogni caso è sempre possibile definire la \textbf{funzione di trasferimento} di un sistema lineare come \[G(p)=\frac{N(p)}{D(p)}\] le radici del numeratore si chiamano \textbf{zeri}, mentre quelle del denominatore \textbf{poli}. Importante notare che il denominatore della funzione di trasferimento è anche il polinomio caratteristico della matrice A e dunque i poli corrispondono agli autovalori.
+	\\ Se l'ordine del modello ARMA è minore dell'ordine del modello in spazio di stato dall'uscita non mi rendo conto della presenza di uno stato (se ad esempio l'uscita di un condotto idraulico è data nella realtà dalla somma dei flussi di due serbatoi, potrei vederli come se fossero un unico grande serbatoio).
+	\\Gli aggregati di sistemi possono essere collegati in serie e allora le loro fdt vanno moltiplicate $G_s=G_1G_2$, in parallelo con la somma $G_p=G_1+G_2$ o in retroazione $G_r=\dfrac{G_1}{1-G_1G_2}$.
+	
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	\section{Equilibrio}
+	Un sistema si dice all'equilibrio se ingresso e stato (e, quindi, anche uscita) sono costanti, cioè se \[u(t)=\bar{u},\,\,x(t)=\bar{x},\,\,y(t)=\bar{y}\,\,\,\,\forall t\]
+	La ricerca di equilibri per un sistema consiste nel cercare il vettore di stato $\bar{x}$ che risolve \[0=A\bar{x}+b\bar{u}\] per un sistema a tempo continuo, o \[\bar{x}=A\bar{x}+b\bar{u}\] se siamo a tempo discreto.
+	\\Può essere definito il \textbf{guadagno} come $\mu=\dfrac{\bar{y}}{\bar{u}}$.
+	
+	\subsection{Tempo continuo}
+	Se siamo a tempo continuo si distinguono i due casi matrice A non singolare (non ci sono autovalori nulli) da matrice singolare (esiste almeno un autovalore nullo).
+	\\ Se A è non singolare $\bar{x}=-A^{-1}b\bar{u}$, da notare che \textbf{ad ingresso nullo corrisponde equilibrio nullo}, mentre se A è singolare o non esistono soluzioni o ne esistono infinite. Molte volte si riesce a trovare il vettore di stato risolvendo il sistema per $\dot{x}=0$.\\Conoscendo la funzione di trasferimento, a tempo continuo il guadagno è $\mu=G(0)$.
+	
+	\subsection{Tempo discreto}
+	Anche in questo caso si distinguono due tipologie di problemi, quelli in cui la matrice A non possiede autovalori unitari e dunque esiste una sola soluzione $\bar{x}=(I-A)^{-1}b\bar{u}$ e quelli in cui la matrice A ha almeno un autovalore $\lambda=1$ in cui o ci sono infinite soluzioni o nessuna. Anche in questo caso conviene risolvere il sistema del vettore di stato ponendo $x(t+1)=x(t)=\bar{x}$.\\Conoscendo la funzione di trasferimento, a tempo discreto il guadagno è $\mu=G(1)$.
+	
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%	
+	\section{Stabilità}
+	Per un sistema dinamico lineare tempo invariante il concetto di stabilità può essere attribuito in modo equivalente al sistema o all'equilibrio (vedremo che non è così per i sistemi non lineari). Questo concetto permette di capire il comportamento asintotico ($t\to\infty$) del sistema.\\ La stabilità di un sistema dipende solo dalla sua matrice A, in particolare un sistema potrà essere 
+	\begin{itemize}
+		\item asintoticamente stabile;
+		\item semplicemente stabile;
+		\item debolmente instabile;
+		\item (fortemente) instabile.
+	\end{itemize}
+	Per studiare la classe di stabilità del sistema lineare si possono sfruttare più metodi.
+	
+	\subsection{Autovalori} \label{Autovalori}
+	Lo studio degli autovalori della matrice A di un sistema lineare permette di individuare facilmente due classi di stabilità, in particolare se il sistema è a tempo continuo si ha \textbf{asintotica stabilità $\Leftrightarrow Re(\lambda_i)<0\,\,\, \forall i$ e forte instabilità $\Leftrightarrow \exists Re(\lambda_i)>0$}, mentre a tempo discreto si ha \textbf{asintotica stabilità $\Leftrightarrow |\lambda_i|<1\,\,\, \forall i$ e forte instabilità $\Leftrightarrow \exists |\lambda_i|>1$}
+	\\Nel caso in cui fossero presenti autovalori critici (con parte reale nulla a t.c. o con modulo unitario a t.d.) se ne deve studiare la molteplicità.
+	\\Se la molteplicità algebrica coincide con quella geometrica l'autovalore è regolare e si avrà \textbf{semplice stabilità} (notare che se l'autovalore critico ha molteplicità algebrica $=1$ è sempre regolare), mentre se la molteplicità algebrica è maggiore di quella geometrica si avrà \textbf{debole instabilità}.
+	\\Può essere utile introdurre in questo punto il concetto di costante di tempo dominante del sistema come \[T_d=-\dfrac{1}{Re(\max \lambda_i)}\] per sistemi a tempo continuo, mentre \[T_d=-\dfrac{1}{\ln(|\max\lambda_i|)}\] per sistemi a tempo discreto.\\Come tempo di risposta si considera solitamente $T_r=5T_d$.
+	
+	\subsection{Traccia-determinante per sistemi del secondo ordine}
+	\textbf{Per sistemi del secondo ordine} (matrice A $2\times 2$) vale il seguente test:
+	\begin{itemize}
+		\item il sistema a tempo continuo è asintoticamente stabile $\Leftrightarrow trA<0\,,\,detA>0$;
+		\item il sistema a tempo discreto è asintoticamente stabile $\Leftrightarrow |trA|<1+detA\,,\,detA<1$.
+	\end{itemize}
+	Tale test non fornisce nessuna indicazione per sistemi di ordine superiore!
+	
+	\subsection{Traccia}
+	Tale criterio è solo parziale, ci permette di trarre conclusioni certe in alcuni casi o di escluderne altre in altri casi. 
+	Per un sistema a \textbf{tempo continuo} se 
+	\begin{itemize}
+		\item $trA>0\implies$ il sistema è fortemente instabile;
+		\item $trA=0\implies$ il sistema NON è asintoticamente stabile;
+		\item $trA<0$ non posso concludere nulla.
+	\end{itemize}
+		Per un sistema a \textbf{tempo discreto} di ordine n 
+	\begin{itemize}
+		\item $|trA|>n\implies$ il sistema è fortemente instabile;
+		\item $|trA|=n\implies$ il sistema NON è asintoticamente stabile;
+		\item $|trA|<n$ non posso concludere nulla.
+	\end{itemize}
+	
+	\subsection{Determinante tempo discreto}
+	Per un sistema a tempo discreto si ha un criterio simile al  precedente anche per il determinante, in particolare se
+	\begin{itemize}
+		\item $|detA|>1\implies$ il sistema è fortemente instabile;
+		\item $|detA|=1\implies$ il sistema NON è asintoticamente stabile;
+		\item $|detA|<1$ non posso concludere nulla.
+	\end{itemize}
+	
+	\subsection{Poli funzione di trasferimento}
+	Si dimostra che i poli della funzione di trasferimento, e dunque le radici del suo denominatore, coincidono proprio con gli autovalori della matrice A. Si possono dunque sfruttare i risultati del paragrafo~\ref{Autovalori} per lo studio della stabilità. Se tuttavia il polinomio è di grado superiore al secondo può risultare difficile trovarne le soluzioni, entra così in gioco il criterio di Routh.	
+	
+	\subsection{Criterio di Routh}
+	Questo criterio permette di studiare il segno delle soluzioni di un polinomio.\\Dato il polinomio monico \[p^n+\alpha_1p^{n-1}+\alpha_2p^{n-2}+\dots+\alpha_{n-1}p+\alpha_n\]
+	si costruisce la tabella di Routh di dimensione $(n+1)\times (n+1)$
+	\begin{center}
+		\includegraphics{Tab_Routh}
+	\end{center}
+	in cui compaiono nella prima riga (riga 0) i coefficienti $\alpha$ con indice pari ($\alpha_0=1\,\,,\,\,\alpha_2\,\,,\,\,\alpha_4\dots$) fino ad esaurirli e a porre 0 i restanti termini della riga, la seconda riga (riga 1) va riempita in modo analogo alla prima con i coefficienti dispari e gli altri termini si ricavano con la formula 
+	\begin{center}
+		\includegraphics[width=0.4\textwidth]{Crit_Routh}
+	\end{center}
+	
+	Una volta riempita la prima colonna il criterio stabilisce che se gli elementi sono tutti positivi allora le soluzioni avranno tutte parte reale negativa e dunque il sistema è \textbf{asintoticamente stabile}, inoltre se nella prima colonna non ci sono elementi nulli, il numero di autovalori con parte reale positiva coincide con il numero di volte in cui scorrendo dall'alto 
+	verso il basso (o dal basso verso l'alto) gli elementi della prima colonna si passa da un elemento positivo a uno negativo e viceversa, dunque se c'è un cambio di segno il sistema sarà fortemente instabile.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%	
+	\section{Geometria piana del movimento libero}
+	In base alla  posizione nel piano complesso degli autovalori del sistema si possono ottenere traiettorie con diverse geometrie.
+	
+	\subsection{Nodi}
+	Si hanno dei nodi per autovalori reali entrambi negativi o entrambi positivi.
+	\subsubsection{Nodi "normali"}
+	Quando i due autovalori sono \textbf{reali, distinti e concordi} si ottiene un nodo; sarà stabile se sono entrambi negativi, instabile se positivi. La geometria del nodo dipende dagli autovettori associati, in particolare per il nodo stabile ce ne sarà uno che si esaurisce più velocemente (quello in cui $|\lambda|$ è maggiore) che porta la traiettoria vicino a quello che si esaurisce più lentamente che accompagnerà la traiettoria al nodo in modo tangente come da immagine, mentre per il nodo instabile le traiettorie diventeranno parallele all'autovettore più rapido per $t\to\infty$.
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.4 \textwidth]{nodo stab}%
+		\quad\quad
+		\includegraphics[width=0.45 \textwidth]{nodo instab}
+		\caption{\textbf{Nodo stabile e nodo instabile}}
+	\end{figure}
+	\subsubsection{Nodi a stella}
+	Il caso di nodi a stella si ottiene per autovalori \textbf{reali e coincidenti non nulli e regolari}. Gli autovettori degenerano a tutto il piano e si ottiene una geometria simile alla seguente:
+	\begin{figure}[htbp]
+		\centering
+		\includegraphics[width=0.4 \textwidth]{nodo stella stab}%
+		\quad\quad
+		\includegraphics[width=0.44 \textwidth]{nodo stella instab}
+		\caption{\textbf{Nodo a stella stabile e nodo a stella instabile}}
+	\end{figure}
+	\subsubsection{Nodi degeneri}
+		Il caso di nodi degeneri si ottiene per autovalori \textbf{reali e coincidenti non nulli e non regolari} cioè con molteplicità geometrica pari a $1$. Si ottiene un solo autovettore e le orbite sono le seguenti
+	\begin{figure}[htbp]
+		\centering
+		\includegraphics[width=0.4 \textwidth]{nodo deg stab}%
+		\quad\quad
+		\includegraphics[width=0.45 \textwidth]{nodo deg instab}
+		\caption{\textbf{Nodo degenere stabile e nodo degenere instabile}}
+	\end{figure}
+	\subsection{Selle}
+	Si ottiene una sella per autovalori \textbf{reali discordi} ossia uno positivo e uno negativo. L'autovalore negativo darà luogo ad un autovettore che "proviene dall'$\infty$" e "punta" verso la sella chiamato \textbf{varietà stabile}, mentre quello positivo genera un autovettore che "esce" dalla sella e "punta" all'$\infty$ chiamato \textbf{varietà instabile}. Solo se lo stato iniziale si trova su queste varietà esso non avrà una traiettoria a "sella", ma rettilinea, in caso contrario la traiettoria è la seguente:
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.4 \textwidth]{sella}%
+		\caption{\textbf{Sella}}
+	\end{figure}
+	In questo caso non ha senso parlare di autovalore dominante poiché uno tende a zero, mentre l'altro ad infinito.
+	\subsection{Fuochi}
+	Si ottiene un fuoco per autovalori \textbf{complessi coniugati} con parte reale non nulla. Il verso di rotazione va studiato provando ad esempio a calcolare la derivata in un punto vicino al fuoco e vedendo da che parte punta. Il fuoco produce \textbf{oscillazioni} nelle variabili di stato che cambiano continuamente segno come nelle seguenti figure:
+	\begin{figure}[htbp]
+		\centering
+		\includegraphics[width=0.4 \textwidth]{fuoco stab}%
+		\quad\quad
+		\includegraphics[width=0.4 \textwidth]{fuoco instab}
+		\caption{\textbf{Fuoco stabile e fuoco instabile}}
+	\end{figure}
+	
+	\subsection{Varietà centrali}
+	Tali figure di stabilità sono definite non generiche poiché la probabilità di ottenere a random gli autovalori seguenti è nulla, tuttavia esistono casi che si comportano proprio in questo modo.
+	\subsubsection{Centro}
+	Si ottiene un centro per autovalori \textbf{puramente immaginari}. Anche in questo caso il verso di rotazione va studiato osservando il verso della derivata nell'intorno dell'equilibrio. Si ottiene una geometria simile alla seguente: 
+		\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.4 \textwidth]{centro}%
+		\caption{\textbf{Centro}}
+	\end{figure}
+	\subsubsection{Semplice stabilità}
+	Si ottiene quando si ha \textbf{un autovalore nullo e uno negativo}, con una figura simile alla Fig.~\ref{sempl stab}.
+	
+	%	\begin{figure}[htbp]
+	%	\centering
+	%	\includegraphics[width=0.4 \textwidth]{sempl stab}%
+	%	\caption{\textbf{Semplice stabilità}}
+	%\end{figure}
+	
+	\subsubsection{Debole instabilità}
+	Si ottiene quando si ha \textbf{un autovalore nullo e uno positivo}, con una figura simile alla Fig.~\ref{deb inst}.
+	\begin{figure}[H]
+		\centering
+		\subfloat[\textbf{Semplice stabilità}]{\includegraphics[width=0.4 \textwidth]{sempl stab}\label{sempl stab}}
+		\qquad % o altro comando per distanziare
+		\subfloat[\textbf{Debole instabilità}]{\includegraphics[width=0.4 \textwidth]{deb instab}\label{deb inst}}
+		\caption{\textbf{Semplice stabilità e debole instabilità}}
+	\end{figure}
+
+	%\begin{figure}[H]
+	%	\centering
+	%	\includegraphics[width=0.4 \textwidth]{deb instab}%
+	%	\caption{\textbf{Debole instabilità}}\label{deb int}
+	%\end{figure}
+	
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%	
+	\section{Sistemi non lineari}
+	In questo capitolo faremo un breve excursus sulle caratteristiche di un sistema non lineare autonomo e a tempo invariante. 
+
+	\subsection{Equilibri}
+	Un sistema non lineare può avere, al contrario dei sistemi lineari, più equilibri, tali punti dello spazio di stato vanno trovati ponendo, come per il caso lineare, $\dot{x}=0$ per sistemi a tempo continuo o $x(t+1)=x(t)=\bar{x}$ per sistemi a tempo discreto. 
+	
+	\subsection{Stabilità}
+	Per il caso non lineare non si può più parlare di stabilità del sistema, ma si parlerà di stabilità dell'equilibrio. \\Un metodo molto usato è quello della \textbf{linearizzazione}, per attuarlo è necessario calcolare la matrice Jacobiana del sistema che nel caso sia del secondo ordine è della forma  
+	\[
+	J=
+	\begin{vmatrix}
+	\dfrac{\partial f_1}{\partial x_1} & &\dfrac{\partial f_1}{\partial x_2} \\
+	& \\
+	\dfrac{\partial f_2}{\partial x_1} & &\dfrac{\partial f_2}{\partial x_2} 					
+	\end{vmatrix}
+	\]
+	dove con $f_1$ si indica la prima equazione del sistema (quella riferita a $\dot{x}_1$) e analogamente con $f_2$ si indica la seconda. \\
+	Una volta calcolato lo Jacobiano lo si valuta nei punti di equilibrio del sistema che vengono analizzati con gli stessi metodi del caso lineare, trattando la matrice $J$ come la matrice $A$. Studiando gli autovalori di $J$ classifichiamo dunque l'equilibrio.\\ Può essere definito il \textbf{bacino attrattore} di un equilibrio asintoticamente stabile $\bar{x}$ come $B(\bar{x})=\left\lbrace x(0):x(t)\to \bar{x} \,\,per\,\, t\to\infty \right\rbrace $ ossia l'insieme delle condizioni iniziali che portano lo stato all'equilibrio $\bar{x}$.
+		
+	\subsection{Quadro globale delle traiettorie}
+	Per disegnare, in modo approssimativo, il quadro delle traiettorie nello spazio di stato ci si serve del metodo delle \textbf{isocline}. Le isocline sono delle curve nello spazio di stato dove le traiettorie che le attraversano hanno tutte la stessa direzione, in particolare le curve trovate ponendo $\dot{x}_1=0$ saranno attraversate dalle traiettorie in direzione verticale, mentre quelle ottenute ponendo $\dot{x}_2=0$ saranno attraversate dalle traiettorie in direzione orizzontale. \\ Si potrà dunque dividere lo spazio di stato in 4 zone in cui le traiettorie si muoveranno verso l'alto e verso destra $\nearrow$, verso l'alto e verso sinistra $\nwarrow$, verso il basso e verso  destra $\searrow$ o verso il basso e verso sinistra $\swarrow$.
+	
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%	
+	\section{Raggiungibilità}
+	Definire la raggiungibilità del sistema equivale a rispondere alla domanda \emph{"Quali stati posso raggiungere applicando un opportuno ingresso partendo dallo stato nullo?"}, questo perché alcune variabili di stato o loro combinazioni possono \textbf{non essere influenzate} dall'ingresso e in questo caso vengono dette \textbf{non raggiungibili}.\newline\\
+	Il \textbf{sottospazio di raggiungibilità} $X_r$ ha come base gli $r\le n$ vettori indipendenti detti di raggiungibilità della forma
+	$\begin{vmatrix}
+		b & Ab & \dots & A^{r-1}b
+	\end{vmatrix}$.\\
+	Per trovare il valore di $r$ si deve calcolare il rango della matrice \[\mathcal{R}=\begin{vmatrix}
+	b & Ab & \dots & A^{n-1}b
+	\end{vmatrix}\]
+	formata da un numero di vettori pari all'ordine del sistema. \newline\\
+	Se $X_r=\mathbb{R}^n$ il sistema viene detto \textbf{completamente raggiungibile}.\newline\\
+	Nel caso in cui un sistema non sia completamente raggiungibile, si può isolare la sua “parte” dotata della proprietà di raggiungibilità mediante un opportuno, non unico, cambio di variabili di stato $z=Tx$ con 
+	$T^{-1}=
+	\begin{bmatrix}
+	b & Ab & \dots & A^{r-1}b & | & completamento
+	\end{bmatrix}$
+	con la scelta del completamento tale che $det(T^{-1})\ne0$
+	\newline \\
+	Una volta appurati gli stati raggiungibili è lecito domandarsi quale sia l'ingresso $u$ che porti in $x(t)$. Se il sistema è completamente raggiungibile possiamo scrivere una legge di controllo in \textbf{anello aperto}, per cui se \[x(n)=\mathcal{R}u\implies u=\mathcal{R}^{-1}x(n)\]
+	\subsection{Controllore}
+	La teoria della raggiungibilità ci permette di ottenere un controllo anche in \textbf{anello chiuso (retroazione)} con risultati sorprendenti. In particolare vale il seguente teorema 
+	\begin{quote}
+		Il sistema è completamente raggiungibile $\rightleftarrows$ posso scegliere arbitrariamente le radici di $\Delta_A$ (gli autovalori del sistema).
+	\end{quote} 
+	Tale risultato si ottiene scegliendo opportunamente l'ingresso come \[u=k^Tx+v\] ottenendo così un sistema del tipo
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.6 \textwidth]{controllore}%
+		\caption{\textbf{Schema a blocchi del controllore per l'assegnazione di autovalori arbitrari ad un processo completamente raggiungibile}}
+	\end{figure}
+	e risolvendo in seguito $n$ equazioni lineari per determinare il vettore $k^T$ come nel seguente esempio:\\
+	senza considerare il significato fisico del sistema consideriamo 
+		\[
+	A=
+	\begin{vmatrix}
+	0 &  \,\,\,1 \\
+	& \\
+	0 &-h/j 					
+	\end{vmatrix}
+	\]
+	\[
+	b=
+	\begin{vmatrix}
+	0 \\
+	\\
+	1/j 					
+	\end{vmatrix}
+	\]
+	 e dunque \[
+	 \mathcal{R}=
+	 \begin{vmatrix}
+	 0 &  \,\,\,1/j \\
+	 & \\
+	 1/j &-h/j^2					
+	 \end{vmatrix}
+	 \]
+	 Notato che $det(\mathcal{R})\ne0$ e dunque il sistema è completamente raggiungibile posso scrivere una nuova matrice 
+	 \[
+	 A_c=A+b\,k^T=\begin{vmatrix}
+	 0 & 1 \\
+	 &\\
+	 k_1/j & (k_2-h)/j
+	 \end{vmatrix}
+	 \]
+	che ha polinomio caratteristico $\Delta_{A_c}=\lambda^2+(h-k_2)/j\lambda-k_1/j$. Supponiamo ora di voler avere come autovalori del sistema $-10h/j$ e $-20h/j$. Tramite semplici calcoli otteniamo che $k_1=-29h$ e $k_2=-200h^2/j$.
+	\newline \\
+	Solitamente lo scopo del  controllore è quello di \textbf{stabilizzare un sistema instabile}, dunque alla domanda \emph{"Dato il sistema instabile (A,b), è possibile stabilizzarlo?"} si può rispondere immediatamente in maniera affermativa nel caso in cui il sistema sia \textbf{completamente raggiungibile} (vedi teorema sopra), ma in alcuni casi la risposta può essere affermativa anche se il $det(\mathcal{R})=0$, in particolare il sistema non c.r. è stabilizzabile se l'autovettore associato all'autovalore instabile \textbf{giace nello spazio di raggiungibilità} dato dallo \textbf{span} di $\mathcal{R}$.
+	
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%		
+	\section{Osservabilità}
+	Abbiamo già notato che nel modello ARMA il grado del denominatore $D(p)$ può essere minore dell'ordine del sistema e quindi essere solo "un pezzo" del polinomio caratteristico $\Delta_A$, questo perché alcune variabili di stato, o loro combinazioni lineari, possono \emph{NON} influenzare l'uscita. \\Tali variabili, o combinazioni, vengono dette \textbf{non osservabili}, al contrario se influenzano l'uscita si chiamano \textbf{osservabili}.
+	Definire l'osservabilità di un sistema equivale a rispondere alla domanda \emph{"Esistono condizioni iniziali (non nulle) che generano un'uscita libera nulla?"} se la risposta è affermativa il sistema non può essere completamente osservabile. \\Come per la raggiungibilità si definisce una matrice di osservabilità 
+	\[\mathcal{O}=
+	\begin{vmatrix}
+	c^T\\
+	c^TA\\
+	\vdots\\
+	c^TA^{n-1}
+	\end{vmatrix}\] 
+	Se $det(\mathcal{O})\ne0$ allora il \textbf{sottospazio di non osservabilità} $X_{no}$ è vuoto e il sistema è \textbf{completamente osservabile}, altrimenti $dim(X_{no})=n-rank(\mathcal{O})$\\
+	Il sottospazio di non osservabilità coincide con il nucleo di $\mathcal{O}$, va dunque calcolato risolvendo \[\mathcal{O}v=0\]
+	
+	\subsection{Ricostruttore dello stato}
+	Nella sintesi del controllore si è ipotizzato di conoscere tutte le variabili di stato del sistema, tuttavia non è sempre possibile nelle applicazioni pratiche. Diventa dunque importante determinare se sia possibile ricavare un'accettabile approssimazione dello stato a partire dalla sola conoscenza delle variabili d'ingresso e d'uscita. Tale problema viene chiamato \textbf{ricostruzione dello stato}.
+	Supponendo che il sistema da ricostruire sia \[\dot{x}=Ax+bu\]\[y=c^Tx+du\] il ricostruttore (osservatore) è del tipo 
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.6 \textwidth]{ricostruttore}%
+		\caption{\textbf{Schema a blocchi del ricostruttore}}
+	\end{figure}
+	dove $\hat{x}$ rappresenta la stima dello stato del sistema. La qualità della stima	può essere misurata in termini dell'entità dell'errore di osservazione \[e(t)=\hat{x}(t)-x(t)\]
+	
+	\subsubsection{Ricostruttore banale}
+	Come primo approccio al problema potremmo considerare un ricostruttore che è la copia del modello del sistema con il medesimo ingresso e dunque 
+	\[\dot{\hat{x}}=A\hat{x}+bu\]
+	con condizione iniziale $\hat{x}(0)=\hat{x}_0$. Se la stima a priori $\hat{x}_0$ fosse uguale allo stato iniziale e dunque $e(0)=0$ allora l'osservatore potrebbe ricostruire esattamente lo stato del sistema.
+	
+	Se tuttavia $e(0)\ne0$, cioè se non si dovesse conoscere con estrema precisione lo stato iniziale, si può facilmente notare che la dinamica dell'errore è \[\dot{e}=Ae\] ed evolvendo quindi come il sistema non è possibile controllarlo: in particolare non può essere aumentata la velocità di convergenza nel caso la matrice $A$ sia asintoticamente stabile, ma, ben più allarmante, non è neanche detto che l'errore tenda a zero (matrice instabile)!
+	
+	\subsubsection{Ricostruttore asintotico}
+	In questo modello di ricostruttore entra in gioco anche il valore dell'uscita che viene quindi supposta misurabile. Le equazioni si  riscrivono
+	\[\dot{\hat{x}}=A\hat{x}+bu+l(\hat{y}-y)\,,\,\,\,\hat{x}(0)=\hat{x}_0\]
+	\[\hat{y}=c^T\hat{x}+du\]
+	Si è aggiunto un termine correttivo	proporzionale alla discrepanza tra l'uscita stimata dall'equazione sopra e quella misurata.
+	
+	Con questa nuova formulazione la dinamica dell'errore è espressa da \[\dot{e}=(A+l\,c^T)e\]
+	Chiamata $A_{ric}=A+l\,c^T$ la nuova matrice, vale un teorema simile a quello dell'assegnazione degli autovalori della matrice del controllore di un sistema completamente raggiungibile ossia 
+	\begin{quote}
+		Il sistema è completamente osservabile $\rightleftarrows$ posso scegliere arbitrariamente le radici di $\Delta_{Aric}$ (gli autovalori della matrice).
+	\end{quote} 
+	Se dunque il sistema è completamente osservabile si può decidere arbitrariamente la dinamica dell'errore $e(t)=\hat{x}(t)-x(t)$, in particolare può essere scelta una dinamica asintoticamente stabile che lo faccia tendere a zero, si riesce cioè a ricostruire asintoticamente lo stato.
+	
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%	
+	\section{Sintesi del regolatore}
+	Abbiamo visto che se un sistema è completamente raggiungibile può essere controllato e quindi i suoi autovalori possono essere assegnati arbitrariamente, mentre se il sistema è completamente osservabile si può ricostruirne lo stato asintoticamente senza misurarlo. Ci chiediamo ora se questi processi possono essere uniti in un unico anello chiuso. 
+	Dall'unione di ricostruttore e controllore otteniamo il \textbf{regolatore} con uno schema a blocchi simile al seguente:
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.7 \textwidth]{regolatore}%
+		\caption{\textbf{Schema a blocchi del regolatore}}\label{figura:regolatore}
+	\end{figure}
+	in cui il controllore agisce sulla stima dello stato fornita in uscita dal ricostruttore invece che sullo stato stesso, molte volte difficilmente misurabile.
+	\newline \\
+	Senza fare nessuna dimostrazione viene riportato il sistema finale ottenuto e successivamente i risultati notevoli.
+	Introduciamo una \textbf{nuova variabile} \[z(t)=\begin{vmatrix}
+	x(t)\\
+	\\
+	e(t)
+	\end{vmatrix}\] 
+	il sistema di Fig.~\ref{figura:regolatore} può essere allora descritto da 
+	\[
+	\dot{z}(t)=\begin{vmatrix}
+	\,A+b\,k^T & b\,k^T\\
+	0 & A+l\,c^T\,
+	\end{vmatrix}
+	z(t)+\begin{vmatrix}
+	\,b\,\\
+	\,0\,
+	\end{vmatrix}
+	v(t)= \bar{A}z+\bar{b}v
+	\]
+	Si nota che $\bar{A}$ è triangolare a blocchi e dunque i suoi autovalori si calcolano separatamente per il blocco $A+b\,k^T$ e per quello $A+l\,c^T$, vale cioè il \textbf{teorema di separazione}: se il sistema è completamente raggiungibile e osservabile posso scegliere indipendentemente la dinamica del processo e dell'errore di ricostruzione.
+	
+	L'unico limite posto nell'assegnare gli autovalori di un sistema completamente raggiungibile e osservabile è dunque un limite tecnico-economico.
+	
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%	
+	\section{Scomposizione canonica di Kalman}
+	Le nozioni di raggiungibilità e osservabilità permettono di interpretare (dopo aver effettuato un opportuno cambio di variabili $z=Tx$) un qualsiasi sistema lineare come l'aggregato di quattro sottosistemi chiamati, rispettivamente, \label{Kalman}
+	\begin{enumerate}
+		\item [(a)] parte raggiungibile e \textbf{non} osservabile
+		\item [(b)] parte raggiungibile e osservabile
+		\item [(c)] parte \textbf{non} raggiungibile e \textbf{non} osservabile
+		\item [(d)] parte \textbf{non} raggiungibile e osservabile
+	\end{enumerate}
+	\begin{figure}[htbp]
+		\centering
+		\includegraphics[width=0.7 \textwidth]{Kalman}%
+		\caption{\textbf{Sistema proprio scomposto secondo la convenzione di Kalman}}
+	\end{figure}
+	Se la dimensione del sistema è $n$ e $n_a\,,\,n_b\,,\,n_c\,,\,n_d$ sono le dimensioni delle quattro parti, ovviamente $n=n_a+n_b+n_c+n_d$.
+	\'E importante notare che gli autovalori complessivi sono l'unione degli autovalori delle singole parti. 
+	
+	
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	\section{Analisi della funzione di trasferimento}
+	In questo capitolo analizziamo più in dettaglio alcuni aspetti della funzione di trasferimento che ci avvicineranno al capitolo delle risposte ad ingressi canonici e al controllo nel dominio delle frequenze.
+	Prima  di procedere ricordiamo alcune caratteristiche della funzione di trasferimento definita come $G(p)=\dfrac{N(p)}{D(p)}$ dove $N$ e $D$ sono i polinomi in $p$ che soddisfano l'equazione del modello ARMA $D(p)\,y(t)=N(p)\,u(t)$. I polinomi $N$ e $D$ del modello ARMA possono avere delle radici in comune se il sistema non è completamente raggiungibile o osservabile e dunque la funzione di trasferimento potrebbe \emph{"nascondere"} delle informazioni del sistema. In ogni caso i poli della fdt corrispondono, con la propria molteplicità, agli autovalori della parte completamente raggiungibile e osservabile del sistema.
+	
+	\subsection{Stabilità esterna e poli Fdt}
+	La stabilità esterna è fortemente legata al valore dei poli (autovalori della parte raggiungibile e osservabile\footnote{Nota: poli multipli danno sempre autovalori non regolari di A con molteplicità geometrica pari a $1$.}) della funzione di trasferimento associata al sistema in esame. Prima di proseguire ricordiamo che, chiamando le parti scomposte del sistema con la convenzione del paragrafo~\ref{Kalman}, le uniche parti che influenzano l'uscita sono la $(b)$ e la $(d)$, in particolare $y_b$ è l'uscita forzata, mentre $y_d$ non dipende dall'ingresso ma solamente dalle condizioni iniziali (in particolare se poniamo $x(0)=0$ avremo $y_d=0$ e dunque l'uscita del sistema sarà solo l'uscita forzata). 
+	\newline \\
+	Possiamo allora dire che un sistema è \textbf{esternamente stabile} $\leftrightarrow$ la sua uscita  \textbf{forzata} ($y_b$) è \textbf{limitata} per ogni ingresso $u$ limitato.
+	\newline \\
+	Come abbiamo già detto la stabilità esterna è legata ai poli della Fdt, in particolare vale che
+	\newline \\
+	un sistema è esternamente stabile $\leftrightarrow$ i poli della Fdt associata hanno $Re(\lambda_i)<0$ per un sistema a tempo continuo o $|\lambda_i|<1$ per un sistema a tempo discreto, cioè se la sua parte $(b)$ è \textbf{asintoticamente stabile} (Se la parte $(b)$ è semplicemente stabile il sistema \textbf{NON} è esternamente stabile).
+	\newline \\
+	Da notare che nel caso (molto comune) di sistema completamente raggiungibile e osservabile stabilità e stabilità esterna coincidono.
+	
+	
+	\subsection{Ingressi nascosti e zeri Fdt}
+	Consideriamo un sistema completamente raggiungibile e osservabile.
+	
+	Se la funzione di trasferimento ha degli zeri, in condizioni opportune, posso ottenere un'uscita nulla pur avendo un ingresso, questo perché l'equazione \[N(s)u(t)=0\] ammette soluzioni diverse da zero.
+	In particolare\newline \\
+	uno \textbf{zero} di molteplicità $m$ in $s=\lambda$ "blocca" gli ingressi di tipo modo \footnote{Un ingresso di tipo modo è generabile dall'uscita libera di un sistema dinamico lineare e dunque essere della forma $t^\alpha\,e^{\lambda t}$ con opportune condizioni sui valori di $\alpha$ e $\lambda$.} del tipo $e^{\lambda t}, t\,e^{\lambda t}, \dots, t^{m-1}e^{\lambda t}$ che vengono dunque chiamati \textit{ingressi nascosti}. Quando in un sistema entra un ingresso nascosto la sua uscita forzata sarà nulla in particolari condizioni dello stato iniziale che non causano uscita libera, altrimenti, in generale, sarà formata da una combinazioni dei modi del sistema (se il sistema è asintoticamente stabile dopo circa 5 costanti di tempo si avrà comunque uscita nulla).
+	\\
+	Infine un sistema viene definito a \textbf{sfasamento minimo} se la sua Fdt non ha zeri o se tutti i suoi zeri sono "stabili".
+	
+	
+	\subsection{Ricostruzione dell'ingresso}
+	Per ricostruire l'ingresso supponiamo di conoscere i dati in uscita in un intervallo di tempo e di conoscere la funzione di trasferimento $\dfrac{n(s)}{d(s)}$del sistema che ha generato l'uscita.
+	
+	\subsubsection{Ricostruttore banale}
+	Un primo metodo di ricostruzione dell'ingresso conoscendo l'uscita  potrebbe essere quello di dare in ingresso ad un nuovo sistema con fdt invertita rispetto all'originale $\dfrac{d(s)}{n(s)}$ l'uscita in modo che dia in uscita l'ingresso del sistema iniziale. Tuttavia tale approccio vale solo quando, definito il \textbf{grado relativo} della fdt $r=grado(d)-grado(n)$ si ha $r=0$, perché se $r<0$ la fdt non esiste, mentre se $r>0$ la fdt esiste, ma come mostra la Fig.~\ref{fdt impossibile} non esiste la fdt con numeratore e denominatore invertiti.
+	\begin{figure}[htbp]
+		\centering
+		\includegraphics[width=1 \textwidth]{ricostruzione ingresso banale}
+		\caption{\textbf{Sfruttando il software Simulink notiamo che compare un errore se il grado di $d$ è maggiore del grado di $n$ quando cerchiamo di invertire la fdt}}\label{fdt impossibile}
+	\end{figure}
+	
+	\subsubsection{Ricostruttore integrale}
+	Per ricostruire l'ingresso quando $r>0$ posso dare in pasto l'uscita calcolata ad una fdt che ha a numeratore il denominatore del sistema iniziale e a denominatore il numeratore del sistema iniziale moltiplicato per $s^r$, otterrò così in uscita l'integrale \emph{r-uplo} dell'ingresso del sistema iniziale (analogamente a tempo discreto posso ottenere l'ingresso ritardato di $r$ istanti).
+	\newline\\
+	Chiaramente tale metodo ci permette di ricostruire l'ingresso a meno di una combinazione lineare di \emph{ingressi nascosti}. In conclusione dunque è possibile ricostruire (asintoticamente) l'ingresso di un sistema $\leftrightarrow$ è in condizione di sfasamento minimo.
+	
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%	
+	\section{Ingressi e risposte canoniche}
+	Alcuni ingressi vengono definiti canonici perché sono importanti dal punto di vista concettuale, infatti sapere la risposta del sistema all'impulso e all'ingresso sinusoidale ci permette da conoscere la risposta ad un ingresso qualsiasi, o dal punto di vista applicativo come l'ingresso costante spesso usato nei processi a regime o polinomiale spesso usato nell'avviamento di processi industriali.\newline \\
+	Studiare la risposta associata ad un ingresso canonico significa osservare l'uscita di un sistema con stato iniziale nullo $x(0)=0$ che riceve in ingresso un ingresso canonico.
+	
+	\subsection{Impulso, scalino e rampa}
+	Matematicamente l'impulso è definito a tempo continuo come \[imp(t)=\delta(t)=\lim\limits_{\varepsilon \to 0}\delta_\varepsilon(t) \,\,\,\, \text{con} \,\,\,\,\, \delta_\varepsilon(t)=\begin{cases}
+	\frac{1}{\varepsilon} \quad per \,\, 0\le t\le \varepsilon \\
+	0 \quad per \,\, t>\varepsilon
+	\end{cases}\] 
+	mentre a tempo discreto come
+	\[imp(t)=\delta(t)=\begin{cases}
+	1 \quad per \,\, t=0 \\
+	0 \quad per \,\, t\ne0
+	\end{cases}
+	\]
+	\subsubsection*{\textit{Tempo continuo}}
+	A tempo continuo la risposta all'impulso si ottiene risolvendo la formula di Lagrange, chiamata $g(t)$ la risposta, si ha
+	\[g(t)=c^T\int_{0}^{t}e^{A(t-\tau)}\,b\,imp(\tau)\,d\tau \,\, +d\,imp(t)=c^T\,e^{At}\,b+d\,imp(t)\] dove per il calcolo dell'integrale abbiamo sfruttato le proprietà dell'impulso (delta di Dirac). Otteniamo così due termini: il primo $c^T\,e^{At}\,b$ equivale ad un'uscita libera che parte dallo stato iniziale $x(0)=b$ mentre il secondo $d\,imp(t)$ fornisce solamente un contributo istantaneo per $t=0$, poi è identicamente nullo $\forall t>0$.\newline\\ In sostanza dunque l'impulso \textbf{trasferisce istantaneamente} lo stato del sistema dallo stato zero allo stato $b$.
+	\subsubsection*{\textit{Tempo discreto}}
+	A tempo discreto la risposta all'impulso corrisponde all'uscita libera partendo dallo stato $b$ con un ritardo di un istante di tempo, in formule \[x(0)=0\,,\,\,g(0)=d\]
+	\[x(1)=b\,,\,\,g(1)=c^T\,b\]\[ g(t)=c^T\,A^{t-1}\,b\]
+	\newline \\
+	Lo stato iniziale in $b$ eccita tutti\footnote{Se $\lambda$ è irregolare nel movimento libero c'è sicuramente il modo col polinomio di grado massimo} i modi raggiungibili del sistema quindi $g(t)$ contiene tutti i modi associati ai poli della fdt, in sostanza dunque $g(t)\to 0 \text{ per } t\to\infty \leftrightarrow$ il sistema è esternamente stabile.
+	\newline \\
+	Vediamo ora come conoscendo la risposta del sistema all'impulso posso conoscere la risposta ad un ingresso qualsiasi, infatti chiamando $y_{for}$ l'uscita forzata dall'ingresso $u(t)$ si ha
+	\begin{align*}
+	y_{for}&=	\int_{0}^{t}c^T\,e^{A(t-\tau)}\,b\,u(\tau)\,d\tau\,\,+\,\,d\,u(t)\\&=\int_{0}^{t}[\color{red}c^T\,e^{A(t-\tau)}\,b+d\,imp(t-\tau)\color{black}-d\,imp(t-\tau)]\,u(\tau)\,d\tau\,\,+\,\,d\,u(t) \\&=\int_{0}^{t}\color{red}g(t-\tau)\color{black}\,u(\tau)\,d\tau\\& = g(t) \circledast u(t)
+	\end{align*}
+	in definitiva notiamo che $g(t)$ contiene le stesse informazioni della $G(p)$ cioè ci fornisce il legame tra ingresso e uscita con stato iniziale nullo. Le due funzioni sono legate a tempo continuo dalla trasformata di Laplace e a tempo discreto dalla trasformata Zeta (cenni nell'appendice~\ref{trasf lapl}).
+	\\Senza passare dagli sviluppi di Heaviside (metodo che permette di calcolare esattamente la risposta nel dominio del tempo, sviluppato nell'appendice~\ref{Heaviside}), la risposta all'impulso, allo scalino definito come 
+	\[sca(t)=\begin{cases}
+	0 \quad per \,\, t\le0 \\
+	1 \quad per \,\, t>0
+	\end{cases}\]
+	o alla rampa definita come 
+	\[ram(t)=\begin{cases}
+	0 \quad per \,\, t\le0 \\
+	t \quad per \,\, t>0
+	\end{cases}\]
+	può essere calcolata in maniera più qualitativa, in particolare si può studiarne il comportamento asintotico per $t\to\infty$, il comportamento nei primissimi istanti di risposta e la presenza o meno di oscillazioni e punti di massimo/minimo. 
+	
+	\subsubsection{Comportamento asintotico}
+	Cerchiamo ora di capire come si comporta l'uscita $y(t)$ per $t\to\infty$ quando viene dato in ingresso 
+	\subsubsection*{a) impulso}
+		\begin{tabular}{|l|l|}
+				\hline
+				\multirow{3}*{\minitab[c]{$u(t)=imp(t)$}} & $y(+\infty)=0\leftrightarrow$ il sistema è esternamente stabile\\
+				\cline{2-2}
+				& $y(+\infty)=l$ con $l$ finito $\leftrightarrow$ il sistema è semplicemente stabile\\
+				\cline{2-2}
+				& $y(+\infty)=+\infty\leftrightarrow$ la parte completamente raggiungibile e osservabile è instabile    \\
+				\hline
+			\end{tabular} 
+	\subsubsection*{b) scalino}
+		\begin{tabular}{|l|l|}
+			\hline
+			\multirow{3}*{\minitab[c]{$u(t)=sca(t)$}} & $y(+\infty)=\mu\leftrightarrow$ il sistema è esternamente stabile, con $\mu$ guadagno del sistema\\
+			\cline{2-2}
+			& $y(+\infty)=l$ con $l$ finito $\leftrightarrow$ la parte c.r c.o. è semplicem. stabile e non ha poli in $0$\\
+			\cline{2-2}
+			& $y(+\infty)=+\infty\leftrightarrow$ la parte c.r. c.o. è instabile o ha poli nell'origine\\
+			\hline
+		\end{tabular} 
+	\\\\è opportuno ricordare che la risposta di un sistema allo scalino è anche data \textbf{dall'integrale} della risposta dello stesso sistema all'impulso.
+	\subsubsection*{c) polinomio di grado k}
+	\begin{tabular}{|l|l|}
+		\hline
+		\multirow{1}*{\minitab[c]{$u(t)=pol_k(t)$}} & $y(+\infty)=\text{ polinomio di grado}\le k\leftrightarrow$ il sistema è esternamente stabile\\
+		\hline
+	\end{tabular}	
+	\\\\i coefficienti di tale polinomio andranno determinati inserendo il polinomio e le sue derivate all'interno del modello ARMA e poi eguagliando i termini con lo stesso grado.
+	\subsubsection{Comportamento iniziale}
+	Per studiare il comportamento iniziale dell'uscita useremo la proprietà della trasformata della derivata e il teorema del valore iniziale, entrambi presenti nell'appendice~\ref{trasf lapl}.
+	\\\\Consideriamo la funzione di trasferimento scritta come \[G(s)=\dfrac{\beta_rs^{n-r}+\dots+\beta_n}{s^n+\alpha_1s^{n-1}+\dots+\alpha_n}\]
+	dove $r$ è il grado relativo e dunque $\beta_r$ è il primo coefficiente non nullo del numeratore (ricordiamo che se $r=0$ il sistema viene detto improprio).
+	\\Si può dimostrare che nei primi istanti di tempo vale il seguente teorema 
+	\begin{quote}
+		La prima derivata non nulla per $t=0$ della risposta allo scalino [\color{red} all'impulso \color{black}] [\color{cyan}alla rampa\color{black}] di un sistema vale $\beta_r\ne0$ ed è la r-esima [\color{red} (r-1)-esima\color{black}][\color{cyan} (r+1)-esima \color{black}]
+	\end{quote}
+	Osserviamo che il segno di $\beta_r$ è concorde al segno del guadagno $\mu$
+	\begin{itemize}
+		\item sicuramente se il sistema è a sfasamento minimo;
+		\item se il numero di zeri non instabili è pari per un sistema a sfasamento non minimo.
+	\end{itemize}
+	\subsubsection{Presenza di oscillazioni}
+	Affinché siano presenti infinite oscillazioni è necessaria la presenza di poli complessi coniugati, tuttavia non è una condizione sufficiente come si vede nell'esempio di Fig.~\ref{complessi non dominanti} in cui si ha una sola sovraelongazione. 
+	\\{\footnotesize Esiste\footnote{Questo metodo non è stato spiegato a lezione, per questo è riportato in piccolo.} un metodo per capire se il grafico ha dei massimi o minimi locali che afferma che il numero di massimi e minimi nella risposta allo scalino di un sistema \textbf{proprio} con poli e zeri \textbf{reali e distinti} è almeno uguale al numero di \emph{zeri superiori} (zeri "più a destra" del polo dominante) ed ha la stessa parità (come un minimo per uno zero in Fig.~\ref{minimo})  }	
+	
+	
+	\subsubsection{Esempi tracciamento qualitativo}
+	Vediamo ora degli esempi di tracciamento qualitativo della risposta ad un ingresso a scalino
+	\subsubsection*{1 zero instabile e 3 poli stabili reali}
+	Supponiamo che la funzione di trasferimento del sistema abbia tre poli stabili reali, uno zero "instabile", guadagno $\mu>0$ e riceva un ingresso a scalino.\\Sappiamo dal teorema sopra che $y(0)=\dot{y}(0)=0$, mentre $\ddot{y}(0)=\beta_r<0$ visto che $r=2\,,\,\mu>0$ e il numero di zeri instabili è dispari.
+	\\Il sistema è esternamente stabile, dunque la sua risposta asintotica tende a $\mu$, mentre parte da $y=0$ con derivata prima nulla e derivata seconda negativa. Possiamo allora dire che la $y(t)$ può essere così plottata:
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.6 \textwidth]{sottoelongazione}
+		\caption{\textbf{In blu l'uscita qualitativa per questo esempio, in rosso il guadagno raggiunto asintoticamente}}\label{minimo}
+	\end{figure}
+
+	\subsubsection*{Nessuno zero e 2 poli stabili complessi coniugati}
+	Supponiamo che la funzione di trasferimento del sistema abbia due poli stabili complessi coniugati, nessuno zero, guadagno $\mu>0$ e riceva un ingresso a scalino.\\Sappiamo dal teorema sopra che $y(0)=\dot{y}(0)=0$, mentre $\ddot{y}(0)=\beta_r>0$ visto che $r=2\,,\,\mu>0$ e non ci sono zeri.
+	\\Il sistema è esternamente stabile, dunque la sua risposta asintotica tende a $\mu$, mentre parte da $y=0$ con derivata prima nulla e derivata seconda positiva. Possiamo allora dire che la $y(t)$ può essere così plottata:
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.58 \textwidth]{complessi coniugati}
+		\caption{\textbf{In blu l'uscita qualitativa per questo esempio, in rosso il guadagno raggiunto asintoticamente}}
+	\end{figure}
+
+	\subsubsection*{2 poli stabili complessi coniugati e un polo reale}
+	In questo caso non è detto che ci siano infiniti massimi e minimi, dipende infatti da quale polo è dominante:
+	\\\\Costante di tempo dominante data dai poli complessi coniugati:
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.7 \textwidth]{dom compl}
+		\caption{\textbf{In blu l'uscita qualitativa per questo esempio con i poli complessi dominanti su quello reale}}
+	\end{figure}
+	Costante di tempo dominante data dal polo reale:
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.7 \textwidth]{dom reale}
+		\caption{\textbf{In blu l'uscita qualitativa per questo esempio con il polo reale dominante su quelli complessi}}\label{complessi non dominanti}
+	\end{figure}
+
+
+	\subsection{Ingresso sinusoidale}
+	Consideriamo ora una nuova classe di ingressi, quelli di tipo sinusoidale scrivibili come 
+	\[u(t)=U\,\sin(\omega t+\alpha)\] che, secondo le formule trigonometriche può anche essere riscritto come $U\,\sin(\omega t+\alpha)=U\,\cos(\alpha)\sin(\omega t)+U\,\sin(\alpha)\cos(\omega t)$. A questo punto la trasformata di Laplace dell'ingresso può essere scritta agevolmente e risulta
+	\[\mathcal{L}[u(t)]=U(s)=U\,\cos(\alpha)\dfrac{\omega}{s^2+\omega^2}+U\,\sin(\alpha)\dfrac{s}{s^2+\omega^2}\]
+	\\\\Senza addentrarci nei conti, si ottiene che l'uscita, dato un ingresso del tipo $u(t)=U\,\sin(\omega t+\alpha)$ è data da
+	\[y(t)=Y\,\sin(\omega t+\alpha')+ comb.\,\,lineare\,\,modi\,\,sistema\]
+	dove la combinazione lineare dei modi del sistema tende a zero se il sistema è esternamente stabile, la nuova ampiezza $Y=R(\omega)U$ con $R(\omega)=|G(i\omega)|$ chiamato \textbf{guadagno in frequenza} e la nuova fase $\alpha'=\alpha+\varphi(\omega)$ con $\varphi(\omega)=\angle(G(i\omega))$ chiamato \textbf{sfasamento in frequenza}; questo risultato è valido \textbf{se e solo se $i\omega$ non è un polo della fdt\footnote{Nel caso in cui la frequenza della sinusoide in ingresso sia uguale a quella del polo immaginario puro si dice che si manda il sistema in \textbf{risonanza}. Caso che verrà trattato nel prossimo paragrafo}}.\\In pratica la funzione di trasferimento valutata in $s=i\omega$ ci restituisce un numero complesso il cui modulo andrà a moltiplicare l'ampiezza dell'ingresso sinusoidale e la cui fase andrà a sommarsi alla sua fase per ottenere la risposta a questo tipo di ingresso. 
+	\\\\
+	Questo metodo ci permette di calcolare la risposta ad un ingresso qualsiasi\footnote{In realtà ci permette di calcolare la risposta ad un ingresso trasformabile secondo Fourier.} tramite l'utilizzo della trasformata di Fourier, infatti la risposta all'ingresso qualsiasi sarà data dalla sovrapposizione di tutti gli ingressi sinusoidali in cui è stato scomposto il segnale, ognuno pesato opportunamente, in particolare dato un ingresso che ha uno spettro di ampiezza $|U(\omega)|$, l'ampiezza dell'uscita in frequenza sarà data da \[|Y(\omega)|=R(\omega)|U(\omega)|\] con $U(\omega)=\mathcal{F}[u(t)]$ e $R(\omega)=|G(i\omega)|$ in pratica il sistema dinamico lineare si comporta da \textbf{filtro}.
+	\\Dopo aver definito la \emph{banda} come quelle $\left\lbrace \omega \,\,|\,\,\frac{R_{max}}{\sqrt{2}}\le R(\omega) \le R_{max}\right\rbrace$
+	possono essere definiti i seguenti filtri \color{green}ideali \color{black} (nella realtà non si avranno "tagli" così bruschi)
+	\begin{figure}[H]
+		\centering
+		\subfloat[\textbf{Filtro passa basso}]{\includegraphics[width=0.4 \textwidth]{passa basso}}
+		\qquad % o altro comando per distanziare
+		\subfloat[\textbf{Filtro passa alto}]{\includegraphics[width=0.4 \textwidth]{passa alto}}
+		\\
+		\subfloat[\textbf{Filtro passa banda}]{\includegraphics[width=0.4 \textwidth]{passa banda}}
+		\qquad % o altro comando per distanziare
+		\subfloat[\textbf{Filtro elimina banda}]{\includegraphics[width=0.4 \textwidth]{elimina banda}}
+		\caption{\textbf{Filtri in frequenza}}
+	\end{figure}
+	\subsubsection*{Esempio filtro passa basso}
+	Un primissimo esempio di filtro passa basso potrebbe essere semplicemente un sistema con fdt del primo ordine \[G(s)=\dfrac{\mu}{1+sT}\] con guadagno e costante di tempo positivi.
+	\[R(\omega)=\dfrac{\mu}{\sqrt{1+\omega^2T^2}},\,\,\,\varphi(\omega)=-\arctan(\omega T)\] che graficate qualitativamente appaiono così 
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.7 \textwidth]{es passa basso}
+		\caption{\textbf{In verde il guadagno in frequenza e in blu lo sfasamento che è approssimativamente lineare (arancio) nella zona di banda passante}}
+	\end{figure}
+	La banda di questo segnale è data da $\omega\in\left[0,\dfrac{1}{T} \right] $. Da notare che è molto importante che lo sfasamento sia lineare per poter ricostruire il segnale, infatti uno sfasamento esattamente lineare corrisponde ad un semplice \textbf{ritardatore} che a tempo continuo ha una fdt $G(s)=e^{-s\tau}$.
+	\subsubsection{Risonanza}
+	Considerando la risposta di un sistema ad un ingresso sinusoidale si dice che si ha la condizione di \textbf{risonanza} per quelle frequenze $\omega_i$ tali che il grafico del guadagno in frequenza $R(\omega)=|G(i\omega)|$ ha un massimo locale. La risposta ad un ingresso con frequenza di risonanza avrà dunque un'ampiezza maggiore di quelle a frequenze vicine. Nel caso in cui la funzione di trasferimento avesse due poli immaginari puri di modulo $\omega_r$ il grafico di $R(\omega)$ divergerebbe a $+\infty$. 
+	\\\\
+	Consideriamo come esempio il caso di un sistema con funzione di trasferimento con due poli complessi coniugati che risulta quindi \emph{sempre}\footnote{Se per esempio partiamo con $G(s)=\dfrac{10}{s^2+2s+11}=\dfrac{10}{11(s^2/11+2/11\,s+1)}=\dfrac{10/11}{s^2/11+2/11\,s+1}$ e dunque $\omega_n=\sqrt{11}\,\,,\,\xi=1/\sqrt{11}$ e $\mu=10/11$.} scrivibile come 
+	\[G(s)=\dfrac{\mu}{1+\dfrac{2\xi}{\omega_n}s+\dfrac{s^2}{\omega_n^2}}\] 
+	dove con $\xi>0$ si indica lo smorzamento del sistema e con $\omega_n$ la sua pulsazione naturale.
+	\\Proseguendo con i conti si trova che $R(\omega)$ ha un massimo in $\omega_r=\omega_n\sqrt{1-2\xi^2}$ se $\xi<$$ 1\over\sqrt{2}$ e che $R(\omega_r)=\dfrac{1}{2\xi\sqrt{1-\xi^2}}$ e dunque può essere graficato qualitativamente come in Fig.~\ref{modulo risonanza}.\\
+	\begin{figure}[htbp]
+		\centering
+		\subfloat[\textbf{Sull'asse y il modulo di $R(\omega)$, sull'asse x $\frac{\omega}{\omega_n}$, con $\gamma$ si intende lo smorzamento $\xi$}]{\includegraphics[width=0.47 \textwidth]{guadagno risonanza}\label{modulo risonanza}}
+		\qquad % o altro comando per distanziare
+		\subfloat[\textbf{Sull'asse y il valore di $\varphi(\omega)$, sull'asse x $\frac{\omega}{\omega_n}$, con $\gamma$ si intende lo smorzamento $\xi$}]{\includegraphics[width=0.47 \textwidth]{sfasamento risonanza}\label{fase risonanza}}
+		
+		\caption{\textbf{Diagrammi di guadagno e sfasamento in condizione di risonanza con due poli complessi coniugati}}
+	\end{figure}
+	
+	Si può fare un'analisi analoga per lo sfasamento $\varphi(\omega)$ che risulta come in Fig.~\ref{fase risonanza}.\\
+	
+	Concludiamo dunque che una prima condizione per avere risonanza è avere \textbf{poli complessi coniugati "poco" smorzati} in particolare con $\xi<$$ 1\over\sqrt{2}$$ \simeq0.7 $.
+	\subsubsection{Anti-risonanza}
+	Una condizione duale della risonanza è l'anti-risonanza. Si ha una frequenza di anti-risonanza $\omega_{ar}$ quando il grafico del guadagno in frequenza $R(\omega)=|G(i\omega)|$ ha un minimo locale in $\omega_{ar}$.
+	Anche in questo caso una condizione per avere anti-risonanza consiste nell'avere due zeri complessi coniugati e due poli reali, il grafico del guadagno in frequenza risulta, qualitativamente
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.6 \textwidth]{antirisonanza}
+		\caption{\textbf{Sull'asse y il valore di $R(\omega)$, sull'asse x $\frac{\omega}{\omega_n}$ per $\xi=1$ si ha la  retta costante y=1, mentre per $\xi=0$ si ha il minimo che tocca l'asse x con y=0 }}
+	\end{figure}
+	
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	
+	\section{Diagrammi di Bode}
+	Vogliamo ora imparare a disegnare i diagrammi di $R(\omega)$ e di $\varphi(\omega)$ per funzioni di trasferimento qualsiasi. Prima di iniziare riportiamo i tre punti fondamentali da cui si parte:
+	
+	\subsubsection*{Scala logaritmica per $\omega$}
+	Le frequenze sull'asse delle ascisse saranno, in questo tipo di diagrammi, in scala logaritmica in base 10, la seguente immagine mostra il rapporto tra scala logaritmica e lineare
+	\begin{figure}[H]
+		\centering
+	 	\includegraphics[width=0.6 \textwidth]{scala log}
+		\caption{\textbf{Ogni passo sulla scala logaritmica viene definito decade}}
+ 	\end{figure}
+	
+	\subsubsection*{Scala in deciBel per $R(\omega)$}
+	L'asse delle ordinate nei diagrammi di $R(\omega)$ sarà nella scala dei dB. \[R_{dB}=20\log_{10}(R)\]
+	\begin{center}
+	\begin{tabular}{c|c}
+		
+		$R$ & $R_{dB}$ \\
+		\hline
+		1 & 0\\
+		10 & 20\\
+		100 & 40\\
+		0.1 & -20\\
+		0.01 & -40
+	\end{tabular}
+	\end{center}
+	
+	\subsubsection*{Fdt nella forma fattorizzata "1+"}
+	Per applicare il metodo di Bode la funzione di trasferimento deve essere espressa nella forma fattorizzata in cui compaiono al numeratore il guadagno generalizzato $\mu$ e le produttorie degli zeri reali con le loro costanti di tempo $\tau$ e quelle degli zeri complessi coniugati con smorzamento $\xi$ e pulsazione naturale $\omega_n$, mentre a denominatore si ha il prodotto di $s^h$ con i poli reali nella forma "1+" con costanti di tempo T e poli complessi coniugati espressi sempre evidenziando smorzamento e pulsazione naturale.
+	\\\\
+	Finite le premesse si ottiene che $R_{db}(\omega)$ è dato dalla somma di vari contributi:
+	\begin{align*}
+		R_{db}(\omega)&=20\log_{10}|\mu|-20h\log_{10}\omega+\\
+		&+\sum_{j=1}^{n_{zr}}20\log_{10}\sqrt{1+\omega^2\tau_j^2}-\sum_{j=1}^{n_{pr}}20\log_{10}\sqrt{1+\omega^2T_j^2}+\\
+		&+\sum_{j=1}^{n_{zc}}20\log_{10}\sqrt{\left(1-\dfrac{\omega^2}{\omega_{nzj}^2}\right)^2+\left(2i\xi\dfrac{\omega}{\omega_{nzj}}\right)^2}+\\
+		&-\sum_{j=1}^{n_{pc}}20\log_{10}\sqrt{\left(1-\dfrac{\omega^2}{\omega_{npj}^2}\right)^2+\left(2i\xi\dfrac{\omega}{\omega_{npj}}\right)^2}
+	\end{align*}
+	
+	Il diagramma di Bode sarà dunque dato dalla somma dei vari pezzi componenti $R_{db}(\omega)$ con alcune approssimazioni, in particolare la \textbf{prima approssimazione di Bode} consiste nel considerare la parte dovuta agli zeri e ai poli reali uguale alle parti "asintotiche", cioè considerare la parte per $\omega<\dfrac{1}{|T|}=\omega\ll\dfrac{1}{|T|}$ e $\omega>\dfrac{1}{|T|}=\omega\gg\dfrac{1}{|T|}$, mentre la \textbf{seconda approssimazione di Bode} tratta come reali di pari modulo e stabilità gli zeri e i poli complessi coniugati, considerando per definizione stabili quelli immaginari puri.
+	\\Con queste approssimazioni ogni zero e polo da un contributo pari ad una linea spezzata: orizzontale e con valore nullo per $\omega<\dfrac{1}{|T|}$ e con pendenza di $-20dB/decade$ per ogni polo e di $+20db/decade$ per ogni zero. Le regole vengono riassunte nel seguente elenco:\\\\
+
+	\subsubsection{Regole per il tracciamento del diagramma di Bode di $R(\omega)$}
+	
+	\begin{enumerate}
+		\item Scrivere la funzione di trasferimento nella forma fattorizzata "1+" o $(\mu,T)$;
+		
+		
+		\item indicare con $"\circ" \,\,e\,\,"\times"$ zeri e poli rispettivamente sull'asse delle frequenze corrispondenti a $\omega=1/|\tau|$ oppure a $\omega=1/|T|$, ovviamente non verranno indicati quelli nell'origine che si trova a $-\infty$, ricordare che quelli complessi coniugati \textbf{vanno considerati reali (e doppi) con lo stesso modulo e stabilità} di quelli complessi;
+		 
+		
+		\item tracciare la retta valida per le "basse frequenze", cioè quella data dal contributo di $\mu/s^h$, passante da $\omega_0=|\mu|^{1/h}$ e con pendenza pari a $-20h$ fino al polo/zero successivo;
+		
+		
+		\item seguire la retta a bassa frequenza modificando opportunamente la pendenza della retta di $-20dB/decade$ per ogni polo e di $+20db/decade$ per ogni zero;
+		
+		
+		\item correggere il diagramma nell'intorno dei poli e degli zeri complessi coniugati con smorzamento $\xi<1/\sqrt{2}$ visto che si è in condizione di risonanza/anti-risonanza e si ha quindi un massimo/minimo.
+		
+		
+	\end{enumerate}
+	
+	Mostriamo un esempio in cui la fdt vale $G(s)=\dfrac{1000(1+s)}{s(s+10)^2}$ che riscriviamo, visto il punto 1. qui sopra come $G(s)=\dfrac{10}{s}\dfrac{1+s}{(1+0.1s)^2}$. Osserviamo che abbiamo uno zero in -1 e tre poli, uno in 0 e due in -10 che riportiamo con i simboli opportuni sull'asse delle frequenze. Dato che $h=1$ la retta a bassa frequenza ha pendenza $-20dB/decade$ e passa per zero in $\omega=10$, seguendola ci alziamo in $\omega=1$ di $20dB/decade$ ottenendo dunque una retta orizzontale e infine in $\omega=10$ passiamo ad una pendenza di $-40dB/decade$ visto che ci sono due poli. Otteniamo un grafico simile al seguente:
+	 	\begin{figure}[H]
+	 	\centering
+	 	\includegraphics[width=1 \textwidth]{es 1 bode}
+	 	\caption{\textbf{Il grafico in blu è stato plottato con MATLAB mentre quello nero è dato dai passaggi scritti sopra.}}
+	 \end{figure}
+	
+	\subsubsection{Regole per il tracciamento del diagramma di Bode di $\varphi(\omega)$}
+	Il tracciamento del diagramma di Bode per lo sfasamento segue le stesse linee del tracciamento per il guadagno, si effettuano infatti le stesse approssimazioni di Bode che si erano introdotte per le frequenze "asintotiche", in particolare 
+	\\\\\textbf{per la parte di guadagno generalizzato e polo nell'origine di molteplicità h $\dfrac{\mu}{s^h}$} si ha che  
+	\[\varphi(\omega)=\angle\left(\dfrac{\mu}{(i\omega)^h}\right)=\angle(\mu)-h\pi/2\,\,\,\,con\,\,\,\,\angle(\mu)=\begin{cases}
+	+\pi \,\,se\,\, \mu<0\\
+	0 \,\,se\,\, \mu>0
+	\end{cases}\]
+	\textbf{per gli zeri e i poli reali} si ha che, considerando sempre la solita approssimazione
+	\[\varphi(\omega)=\begin{cases}
+	\pm\dfrac{\pi}{2} \,\,se\,\, \omega>\dfrac{1}{|T|}\\
+	0 \,\,se\,\, \omega<\dfrac{1}{|T|}
+	\end{cases}\]
+	considerando sfasamento positivo di $+\pi/2$ in caso di zeri stabili e poli instabili, mentre va considerato uno sfasamento negativo di $-\pi/2$ per zeri instabili e poli stabili.
+	\\\\\textbf{per gli zeri e i poli complessi coniugati} il contributo è dato da
+	\[\varphi(\omega)=\angle\left(1-\dfrac{\omega^2}{\omega_n^2}+2i\xi\dfrac{\omega}{\omega_n}\right)=\begin{cases}
+	atan\left(\dfrac{2\xi\frac{\omega}{\omega_n}}{1-\frac{\omega^2}{\omega_n^2}}\right) \,\,\text{ se siamo nel I o IV quadrante}\\
+	atan\left(\dfrac{2\xi\frac{\omega}{\omega_n}}{1-\frac{\omega^2}{\omega_n^2}}\right)+\pi \,\,\text{ se siamo nel II quadrante}\\
+	atan\left(\dfrac{2\xi\frac{\omega}{\omega_n}}{1-\frac{\omega^2}{\omega_n^2}}\right)-\pi \,\,\text{ se siamo nel III quadrante}
+	\end{cases}\]
+	Per calcolare esattamente la fase ad una data pulsazione devo fare \[\varphi(\omega)=\sum\pm atan(\omega\,T)\] con i segni dati dalla stabilità di zeri e poli.
+\\
+	Proviamo a disegnare il diagramma di Bode per la fase con la stessa funzione di trasferimento dell'esempio precedente $G(s)=\dfrac{10}{s}\dfrac{1+s}{(1+0.1s)^2}$. Il grafico per basse frequenze partirà da uno sfasamento di $-\pi/2$ visto che $\mu>0$ e $h=1$, poi in $\omega=1$ avrà un salto di $+\pi/2$ dovuto allo zero stabile e finirà dunque in 0 per una decade visto che i due poli stabili in $\omega=10$ forniranno un contributo di $-\pi$. Si ottiene un grafico simile al seguente:
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=1 \textwidth]{es 1 bode fase}
+		\caption{\textbf{Il grafico in blu è stato plottato con MATLAB mentre quello nero è dato dai passaggi scritti sopra, notiamo che l'approssimazione di Bode è molto grossolana.}}
+	\end{figure}
+
+	\subsection{Diagramma di Bode di $R(\omega)$ per gli aggregati}
+	Sfruttando le solite approssimazioni di asintotiche di Bode che trasformano i $\ll$ in $<$ e i $\gg$ in $>$ si possono disegnare i diagrammi di Bode degli aggregati partendo da quelli dei singoli blocchi molto velocemente.
+	\subsubsection{Serie}
+	Il tracciamento dei diagrammi di sistemi in serie non ha bisogno di nessuna approssimazione, infatti $R_s(\omega)=R_1(\omega)\,R_2(\omega)$ e dunque \[R_s(\omega)_{dB}=R_1(\omega)_{dB}+R_2(\omega)_{dB}\]
+	i due grafici vanno quindi sommati.
+	
+	\subsubsection{Parallelo}
+	Per il tracciamento dei diagrammi di sistemi in parallelo si introduce un'approssimazione, infatti si considera $R_p(\omega)=|G_1(i\omega)+G_2(i\omega)|\simeq max\left\{R_1(\omega)\,,\,\,R_2(\omega)\right\}$ e dunque\[R_p(\omega)_{dB}=max\left\{R_1(\omega)_{dB}\,,\,\,R_2(\omega)_{dB}\right\}\] si prende cioè il diagramma "che sta sopra". Tale approssimazione è buona tanto più i due guadagni sono diversi, sarà dunque pessima nei punti di "scambio".
+	
+	\subsubsection{Retroazione}
+	\label{bode retroazione}
+	Anche per la retroazione si introduce un' approssimazione che porta a concludere che $R_r(\omega)=min\left\{R_1(\omega)\,,\,\,\dfrac{1}{R_2(\omega)}\right\}$ e dunque considerando il \textbf{guadagno in deciBel}\[R_r(\omega)_{dB}=min\left\{R_1(\omega)_{dB}\,,\,\,\mathbf{-R_2(\omega)_{dB}}\right\}\]
+ 	Per disegnare il diagramma della retroazione si specchia dunque quello di $R_2(\omega)$ rispetto all'asse corrispondente a $R(\omega)=0\,dB$ e poi si prende il minimo tra quello di $R_1(\omega)$ e questo specchiato. Anche in questo caso l'approssimazione è buona tanto più i due guadagni sono diversi e pessima nei punti di "scambio".
+	
+
+	\subsection{Diagrammi polari}
+	Esiste un ulteriore grafico alternativo ai diagrammi di Bode per rappresentare modulo e fase di $ G(i\omega) $ ed è appunto il \textbf{diagramma polare della risposta in frequenza}. In un solo grafico vengono riportare le informazioni sia del guadagno che dello sfasamento e consiste nel rappresentare $ G(i\omega)=R(\omega)\,e^{i\varphi(\omega)} $ come un vettore rotante nel piano complesso. Da notare che il diagramma polare è un diagramma "orientato" per frequenze crescenti e che presenta delle discontinuità solo se la fdt ha dei poli immaginari puri (salto di fase di $ -k\pi $ con $ k $ molteplicità algebrica dei poli immaginari e modulo  di $ G(i\omega)\to\infty$). Per il tracciamento qualitativo di questo diagramma è comunque necessario partire dai diagrammi di Bode ed è bene ricordare alcuni luoghi geometrici del piano complesso correlati con i diagrammi di modulo e fase della risposta in frequenza:
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.6 \textwidth]{notevoli polar}
+		\caption{\textbf{Alcuni luoghi geometrici notevoli del piano complesso}}
+	\end{figure}
+	Il diagramma polare è poi realizzato valutando i diagrammi di Bode in alcuni punti "salienti" come per $ \omega=0\,,\,\,\omega=+\infty $ o in altri punti critici come nei seguenti esempi.
+	
+	\subsubsection*{Esempio 1}
+	In questo primo esempio plottiamo il diagramma polare di una fdt uguale a\\ $ G(s)=\dfrac{10}{(1+0.1s)(1+s)(1+10s)} $ che avrà il seguente diagramma di Bode
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.5 \textwidth]{bode polar1}
+	\end{figure}
+	Notiamo che il diagramma parte da $ 20dB $ che corrisponde ad un modulo di  $ 10 $ nel mondo lineare e con fase nulla e quindi il diagramma polare parte dall'asse reale (fase 0) e dal punto con modulo 10, mentre finisce in $ -\infty dB $ corrispondenti a $ 0 $ e con fase di $ -270^{\circ} $ dunque il diagramma polare finirà nell'origine "dall'alto". Se si vuole fare un diagramma più preciso si possono valutare altri punti altrimenti ci possiamo accontentare, il diagramma viene come il seguente, con a destra uno zoom vicino all'origine.
+	\begin{figure}[H]
+		\centering
+		\subfloat[\textbf{In blu il diagramma polare per questo esempio}]{\includegraphics[width=0.47 \textwidth]{polar1}}
+		\qquad % o altro comando per distanziare
+		\subfloat[\textbf{In arancione lo zoom vicino all'origine del diagramma polare}]{\includegraphics[width=0.47 \textwidth]{polar1 zoom}}
+		\caption{\textbf{Esempio di diagramma polare}}
+	\end{figure}
+	
+	\subsubsection*{Esempio 2}
+	In questo secondo esempio plottiamo il diagramma polare di una fdt uguale a\\ $ G(s)=\dfrac{10(1+s)}{s(1+0.1s)^2} $ che avrà il seguente diagramma di Bode
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.5 \textwidth]{bode polar2}
+	\end{figure}
+	Notiamo che il diagramma parte da $ +\infty dB $ che corrisponde ad un modulo di  $ +\infty $ nel mondo lineare e con fase $ -\pi/2 $ e quindi il diagramma polare parte dall'asse immaginario negativo da $ -\infty $, mentre finisce in $ -\infty dB $ corrispondenti a $ 0 $ e con fase di $ -180^{\circ} $ dunque il diagramma polare finirà nell'origine "da sinistra", notiamo anche che quando il modulo è circa costante si ha un cambio nella direzione di crescita della fase. Se si vuole fare un diagramma più preciso si possono valutare altri punti altrimenti ci possiamo accontentare, il diagramma viene come il seguente.
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.5 \textwidth]{polar2}
+		\caption{\textbf{In blu il diagramma polare per questo esempio ccon guadagno infinito per $ \omega=0 $}}		
+	\end{figure}
+	
+		\subsubsection*{Esempio 3}
+	In questo terzo esempio plottiamo il diagramma polare di una fdt uguale a\\ $ G(s)=\dfrac{10}{(1+s^2)(1+0.1s)} $, che ha due poli immaginari puri e avrà il seguente diagramma di Bode
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.5 \textwidth]{bode polar3}
+	\end{figure}
+	Notiamo che il diagramma parte da $ 20 dB $ che corrisponde ad un modulo di  $ 10 $ nel mondo lineare e con fase $ 0 $ e quindi il diagramma polare parte dall'asse reale positivo per andare all'infinito con una fase di poco inferiore a $ 0^{\circ} $, riparte poi con modulo infinito con una fase inferiore a $ -180^{\circ} $ per poi tornare nell'origine "dall'alto" come nel seguente diagramma.
+
+	\begin{figure}[H]
+		\centering
+		\subfloat[\textbf{In blu il diagramma polare per questo esempio vicino all'origine}]{\includegraphics[width=0.4 \textwidth]{polar3 zoom}}
+		\qquad % o altro comando per distanziare
+		\subfloat[\textbf{In blu il diagramma polare visto "da lontano"}]{\includegraphics[width=0.4 \textwidth]{polar3}}
+		\caption{\textbf{Esempio con poli immaginari}}
+	\end{figure}
+	
+	
+	
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	
+	\section{Controllo in frequenza ad anello chiuso}
+	Iniziamo ora una nuova sezione nella quale studieremo dei metodi grafici per il controllo della stabilità esterna di un sistema controllato in anello chiuso. Studieremo dunque la stabilità della fdt \[F(s)=\dfrac{L(s)}{1+L(s)}\] andando a studiare gli zeri di $ 1+L(s) $
+	\subsection{Criterio di Nyquist}
+	Un primo criterio è quello di Nyquist per il quale deve prima essere introdotto un nuovo tipo di diagramma, per l'appunto quello di Nyquist che è dato dall'immagine attraverso $ L(s) $ del percorso di Nyquist che è il seguente:
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.3 \textwidth]{percorso nyq}
+		\caption{\textbf{Percorso di Nyquist, parte dal quarto di cerchio nel I quadrante attorno all'origine (se c'è polo in 0), segue l'asse immaginario "schivando" eventuali poli immaginari puri, fa un arco all'infinito e risale l'asse immaginario. }}
+	\end{figure}
+	Il diagramma di Nyquist a questo punto si ottiene riportando nello stesso grafico il diagramma polare, il suo simmetrico rispetto all'asse reale e un eventuale arco all'infinito che parte da $ \dfrac{\mu}{\varepsilon^h} $ e termina in $ \dfrac{\mu}{(i\varepsilon)^h} $ con $ \varepsilon\to0 $ e con $ h $ molteplicità del polo nell'origine.
+	\\\\Una volta disegnato il diagramma è possibile applicare il \textbf{criterio di Nyquist} che in formule è 
+	\[p_F^+=p_L^+-N_{L/-1}^{\curvearrowleft}\]
+	ossia il numero di poli instabili del sistema retro-azionato in anello chiuso è pari a quelli di $L$ meno il numero di giri che il diagramma di Nyquist compie attorno al punto $-1$ sull'asse reale conteggiati positivamente in senso antiorario. 
+	\\\\Infine vale il seguente teorema
+	\begin{quote}
+		$F$ è esternamente stabile $\leftrightarrow$ il diagramma di Nyquist di $L$ non passa per $-1$ e il numero di giri attorno a $-1$ è uguale al numero di poli instabili di $L$.
+	\end{quote}
+	
+	
+	\subsection{Criterio di Bode}	
+	Un ulteriore criterio di stabilità è quello di Bode che è un caso particolare di quello di Nyquist applicabile quando valgono le seguenti condizioni:
+	\begin{enumerate}
+		\item $ p_L^+=0 $ cioè $ L(s) $ non ha poli instabili;
+		\item il diagramma di Bode di $ |L(i\omega)|_{dB} $ è >0 per frequenze basse, taglia l'asse degli $0dB$ una sola volta alla pulsazione critica $ \omega_c $ e rimane <0 per $ \omega>\omega_c $.		
+	\end{enumerate}
+	Prima di proseguire osserviamo che tipicamente $ \varphi(\omega_c)<0 $  visto che, affinché i deciBel diventino negativi, devo avere più poli (stabili) che causano sfasamento negativo di zeri.
+	\\
+	In questo caso, essendo $ p_L^+=0 $ la regola per la stabilità di $ F $ diventa $ N_{L/-1}^{\curvearrowleft}=0 $. Da ragionamenti grafici si ottiene che tale criterio è soddisfatto, una volta rispettate le condizioni di applicabilità, dalla seguente condizione una volta introdotto il \textbf{margine di fase} $\varphi_m=\varphi(\omega_c)+\pi$ cioè quell'angolo che manca alla fase del diagramma di Nyquist quando attraversa la circonferenza di raggio unitario (corrispondente a 0dB): \begin{align*}
+	\text{Condizione affinché il sistema ad anello chiuso sia esternamente stabile:} \begin{cases}
+	\mu>0\\
+	\varphi_m>0
+	\end{cases}
+	\end{align*}
+	
+	\subsection{Robustezza}
+	La robustezza è la proprietà del sistema di controllo di funzionare bene in termini di stabilità e prestazioni anche in condizioni non nominali, ovvero quando il controllore progettato viene implementato sul processo reale che non è descritto esattamente dalla fdt teorica del modello.
+	
+	\subsubsection{Margine di fase}
+	Un primo criterio di robustezza per la stabilità è proprio il margine di fase $\varphi_m$ introdotto nel paragrafo precedente, infatti quanto più grande è tale valore, tanto più distante il diagramma di Nyquist passa da -1 come mostra la seguente figura (in quella a destra di ha addirittura margine negativo e quindi sistema instabile)
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.7 \textwidth]{margine fase}
+		\caption{\textbf{Margine di fase}}
+	\end{figure}
+	
+	\subsubsection{Margine di guadagno}
+	Un ulteriore criterio di robustezza è dato dal margine di guadagno definito come \[K_m=\dfrac{1}{|L(i\omega_{\pi})|}\] con $ \omega_{\pi} $ definita come la frequenza tale per cui la fase sia proprio $-\pi$, in sostanza il margine di guadagno è il fattore per cui posso moltiplicare $ L(s) $ per arrivare al limite di stabilità (cioè diagramma che passa proprio per -1). Dunque affinché un sistema sia robusto deve avere un margine di fase>0 e uno di guadagno >1, meglio se molto maggiore.
+	
+	\subsection{Margine di fase e risonanza in anello chiuso}
+	Vogliamo ora cercare di essere più precisi nel tracciamento del diagramma di Bode della fdt $ F(s) $ dell'anello chiuso guardando meglio alcune proprietà della fdt $ L(s) $ che è posta in andata e retroazionata da una fdt unitaria, in particolare, ricordando come veniva ottenuto il diagramma di Bode del modulo per questo tipo di aggregato (vedi par.~\ref{bode retroazione}), il diagramma di $ F(s) $ seguirà la retta orizzontale degli $ 0dB $ fino alla frequenza $ \omega_c $ (il che è positivo poiché significa che un ingresso/desiderio con frequenza limitata nella banda $\omega\in[0,\omega_c]$ viene direttamente trasferito all'uscita come si vorrebbe in un sistema di controllo) da cui inizierà a seguire il grafico di $ L(s) $. Tuttavia ricordiamo che nel punto "di scambio" questa approssimazione per la rappresentazione degli aggregati non è molto valida infatti il denominatore della $ F(s) $ cioè $ 1+L(s) $ viene approssimato con il più lungo tra 1 e $ L(s) $.
+	\\Tramite alcune facili considerazione geometriche si vede che per margini di fase abbastanza piccoli $ |1+L(i\omega_c)|\simeq\varphi_m $ con l'angolo espresso in radianti, e dunque ricordando prima la formula approssimata per l'altezza di un picco di risonanza dato da poli complessi coniugati poco smorzati $ |F(i\omega_c)|\simeq\dfrac{1}{2\xi} $ possiamo porla uguale a $ \dfrac{1}{\varphi_m} $ e ottenere dunque che lo smorzamento è circa $ \xi=\dfrac{\varphi_{m}^{\circ}}{100} $ si ha dunque un massimo di risonanza\footnote{In caso di massimo di risonanza nel grafico di $ F(s) $ non si considera più la definizione standard per la banda della fdt $\left\lbrace \omega \,\,|\,\,\frac{R_{max}}{\sqrt{2}}\le R(\omega) \le R_{max}\right\rbrace$ che in questo caso andrebbe proprio da 0 a $ \omega_c $, ma si considera come banda "d'interesse" (che non distorge il desiderio in ingresso) quella da 0 fino alla frequenza minore di $ \omega_c $ in cui $ |F(i\omega)| $ si discosta significativamente da $ 0dB $} quando $ \varphi<70^{\circ} $. \\\\I due casi con margine di fase maggiore o minore di $70^{\circ} $ hanno anche due diversi tempi di risposta, in particolare quando $\varphi_m>70^{\circ}\,,\,\,T_d=1/\omega_c\implies T_r=5/\omega_c $ mentre per $\varphi_m<70^{\circ}\,,\,\,T_d=1/\xi\,\omega_c\implies T_r=5/\xi\,\omega_c $.
+	
+	
+	\subsection{Prestazioni del controllo}
+	In questo paragrafo faremo riferimento ad un regolatore in frequenza agente in anello chiuso su un processo utilizzando la notazione come in Fig. \ref{rif controllo freq}
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.9 \textwidth]{rif controllo freq}
+		\caption{\textbf{Schema a blocchi con notazione di riferimento: $y_0$ desiderio, $e$ errore, $d$ disturbo e $d_m$ disturbo di misura.}}\label{rif controllo freq}
+	\end{figure}
+	Per valutare le prestazioni del controllore rappresentato sopra, dovremo considerare tre diverse funzioni di trasferimento, spiegate qui in seguito.
+	\subsubsection*{Funzione di trasferimento ingresso uscita}
+	La prima fdt da considerare è proprio la \[F(s)=\dfrac{L(s)}{1+L(s)}\,,\,\,\,\,\,L(s)=R(s)P(s)\]
+	che è la fdt tra $y_0$ e $y$ e anche quella tra disturbo di misura $d_m$ ed errore $e$ e quella cambiata di segno tra disturbo di misura $d_m$ ed uscita $y$.
+	 Per cui, se $ L(s) $ rispetta i requisiti del criterio di Bode, i disturbi costanti o a bassa frequenza verranno riportati direttamente sull'errore o sull'uscita che, regolati asintoticamente stabili, saranno proprio pari a $ d_m $ a regime, a meno che il disturbo non sia a frequenza molto elevata poiché in tal caso sarà attenuato; come abbiamo già visto, invece, è positivo che il desiderio $ y_0 $ sia trasferimento senza distorsioni sull'uscita quando è a bassa frequenza.
+	 \\Si può graficare, qualitativamente $ F(s) $ conoscendo $ L(s) $ come in Fig. \ref{fig:F(s)}
+	 \begin{figure}[htbp]
+	 	\centering
+	 	\includegraphics[width=0.7 \textwidth]{ingr usc F}
+	 	\caption{\textbf{Grafico approssimato della funzione di trasferimento $ F(s) $ conoscendo quello della funzione $ L(s) $}}\label{fig:F(s)}
+	 \end{figure}
+	\subsubsection*{Funzione di sensitività}
+	\label{sensitività}
+	Notiamo che le funzioni di trasferimento che portano dal disturbo all'uscita $ G_{dy}(s) $ o dal desiderio all'errore $ G_{y_0e}(s) $ sono identiche ed in particolare uguali alla funzione di \textbf{sensitività} o sensibilità definita come \[S(s)=\dfrac{1}{1+L(s)}\,,\,\,\,\,\,L(s)=R(s)P(s)\]
+	anche la fdt tra disturbo $ d $ ed errore $ e $ è la medesima ma cambiata di segno.\\
+	Come nel paragrafo precedente avevamo approssimato il grafico di $F(s)$ con le regole di tracciamento dei diagrammi di Bode di sistemi retroazionati salvo i casi in cui si dovesse considerare anche un massimo di risonanza, effettuiamo la stessa approssimazione anche per graficare $ S(s) $  che sarà il minimo tra il diagramma di Bode specchiato di $ L(s) $ e l'asse degli $ 0dB $. Considerando $\varphi_m>70^{\circ}$, dunque un diagramma senza massimi di risonanza, notiamo che il disturbo sull'uscita e il riferimento sull'errore vengono attenuati solo nella banda $ [0,\omega_c] $ per poi essere trasferiti senza distorsioni alle alte frequenze (diagramma di Bode di $ S(s) $ è a $ 0dB $ per $ \omega>\omega_c $).
+	\\Si può graficare, qualitativamente $ S(s) $ conoscendo $ L(s) $ come in Fig. \ref{fig:sensitiv}
+	\begin{figure}[htbp]
+		\centering
+		\includegraphics[width=0.7 \textwidth]{sensitività}
+		\caption{\textbf{Grafico approssimato della funzione di sensitività conoscendo quello della funzione $ L(s) $}}\label{fig:sensitiv}
+	\end{figure}
+	\subsubsection*{Funzione di trasferimento tra riferimento e variabile di controllo}
+	Un'ultima fdt da prendere in considerazione è la \[G_{y_0u}=\dfrac{R(s)}{1+L(s)}\] chiamata a volte funzione di sensitività del controllo o complementare, il cui diagramma di Bode fornisce un'indicazione del "costo" energetico che deve essere fornito in ingresso al processo tramite la $u$, da ulteriori considerazioni si ricava che è meglio avere un regolatore che sia proprio (numero di poli maggiori al numero di zeri) in modo tale da attenuare la $u$ a fronte di riferimento ad alta frequenza.
+	\\Si può graficare, qualitativamente $ F(s) $ conoscendo $ L(s) $ come in Fig. \ref{fig:Q(s)}
+	\begin{figure}[htbp]
+		\centering
+		\includegraphics[width=0.7 \textwidth]{sens controllo}
+		\caption{\textbf{Grafico approssimato della funzione di trasferimento $ G_{y_0u} $ (chiamata $ \mathcal{Q} $ in figura) conoscendo quello del regolatore $ R(s) $ e del processo $ P(s) $ chiamato $ G(s) $ in figura}}\label{fig:Q(s)}
+	\end{figure}
+	\subsection{Progetto del regolatore}
+	In questo paragrafo riassumiamo alcune regole per il progetto del regolatore $ R(s) $ che agirà per controllare il processo in anello chiuso. Il regolatore sarà nella forma 
+	\[R(s)=\dfrac{\mu}{s^h}\,\dfrac{\prod(1+s\tau)\prod(1+\frac{2\xi}{\omega_n}s+\frac{s^2}{\omega_n^2})}{\prod(1+sT)\prod(1+\frac{2\xi}{\omega_n}s+\frac{s^2}{\omega_n^2})}\] e dunque si dovrà decidere il valore del guadagno, il numero di poli nell'origine e la posizione di zeri e poli reali e/o complessi coniugati in modo da plasmare a proprio piacimento e secondo le richieste il diagramma di Bode.
+	\subsubsection{Progetto statico/a regime}
+	Il progetto statico mira a determinare il valore di $\mu$ e di $h$, dunque del numero di poli nell'origine. Va effettuato supponendo che il resto del sistema sia esternamente stabile ed una richiesta tipica può essere quella di attenuare o addirittura eliminare l'errore $ e $ per $ t\to\infty $ quando il riferimento è costante (per eliminarlo basta inserire un polo nell'origine, vedi funzione di sensitività al par. \ref{sensitività}, mentre per attenuarlo bisogna impostare il guadagno in modo che abbia un certo valore in deciBel).
+	\subsubsection{Progetto dinamico}
+	Il progetto dinamico si occupa di tarare la presenza e la posizione di zeri e poli per soddisfare alcuni requisisti di robustezza, rapidità di risposta, precisione dinamica e risparmio energetico.
+	\\Come abbiamo già visto la robustezza è legata ai margini di fase e di guadagno di $ L(s) $, la rapidità di risposta è legata alla posizione della pulsazione di taglio $ \omega_c $, così come la precisione dinamica è legata alla banda del regolatore a sua volta associata a $\omega_c$, infine il risparmio energetico è legato alla fdt tra riferimento e variabile di controllo che è opportuno vada a $ -\infty $ per $\omega\to\infty$ per evitare di avere ingressi elevati alle alte frequenze.
+	\\\\Vogliamo provare a definire alcune regole per il progetto dinamico.
+	Una volta eseguito il progetto statico si disegnano i diagrammi di Bode di $ L(s) $ che ci daranno delle indicazioni su come inserire zeri e poli in $ R(s) $. Tipicamente vengono introdotti zeri che vanno a "cancellare" i poli a bassa frequenza di $ P(s) $ che rallentano il controllo e si aggiungono poli ad alta frequenza per la questione di risparmio energetico. Il diagramma di Bode del modulo risultante dovrebbe tagliare l'asse degli $ 0dB $ il prima possibile e il più distante possibile da poli stabili o zeri instabili che non posso essere cancellati e forniscono un contributo di fase negativo più sono vicini alla frequenza di taglio andando a diminuire il margine di fase.
+	
+	\subsection{Memento per il progetto del controllo in frequenza}
+	La pulsazione di taglio $ \omega_c $ è quella pulsazione tale per cui \[|L(i\omega_c)|=1 \] 
+	può essere quindi ricavata analiticamente conoscendo la fdt $ L(s) $ o può essere letta sul diagramma di Bode come la frequenza alla quale il diagramma del modulo di $ L(s) $ taglia l'asse degli $ 0dB $. 
+	\\Il margine di fase è definito come \[ \varphi_m=\varphi(\omega_c)+180^{\circ} \] se tale angolo risulta minore di zero il sistema controllato in anello chiuso risulta instabile per il criterio di Bode, inoltre un margine di fase maggiore di 70° assicura che il polo dominante della $ F(s)=\dfrac{L(s)}{1+L(s)} $ sia reale e in tal caso la costante di tempo dominante del sistema è \[T_d\simeq\dfrac{1}{\omega_c}\] così come la banda passante è \[\omega\in[0,\omega_c]\] Se invece il margine risulta minore di 70° probabilmente si avranno delle oscillazioni nella risposta ad un qualsiasi ingresso poiché in tal caso i poli dominanti saranno complessi coniugati con approssimativamente uno smorzamento e un tempo di risposta di \[\xi\simeq\dfrac{\varphi_m^{\circ}}{100}\,\,\,\,\,\,\,\,T_r=\dfrac{5}{\xi\omega_c}\] e dunque con un periodo di oscillazione pari a \[T_{osc}=\dfrac{2\pi}{Im\{p_{1,2}\}}=\dfrac{2\pi}{\omega_n\sqrt{1-\xi^2}}\]
+	\\\\Proviamo ora a riassumere alcuni dei requisiti più comuni con i rispettivi criteri da rispettare.
+	\\\\Sistema sia asintoticamente stabile $ \implies $ guadagno e margine di fase maggiori di zero.
+	\\\\L'errore di controllo dovuto a riferimento o disturbo costante sia nullo $ \implies $ deve essere inserito un integratore $\dfrac{1}{s}$.
+	\\\\L'errore di controllo dovuto a riferimento o disturbo costante sia inferiore a tot\% $ \implies \left|\dfrac{1}{1+L(0)}\right|<tot\% $ .
+	\\\\I disturbi a frequenza $\omega_d$ sono attenuati di tot\% $ \implies \left|\dfrac{1}{1+L(i\omega_d)}\right|<tot\% $ .
+	\\\\Il tempo di risposta sia di tot secondi $ \implies \omega_c=\dfrac{5}{tot} $ se  $\varphi_m>70^{\circ}$ oppure $ \omega_c=\dfrac{5}{\xi tot} $ se $\varphi_m<70^{\circ}$ con $ \xi\simeq\dfrac{\varphi_{m}^{\circ}}{100}  $.
+	\\\\Il sistema non presenti oscillazioni $ \implies \varphi_m>70^{\circ} $.
+	\\\\Il sistema sia asintoticamente stabile nonostante un ritardo non modellizzato di tot secondi $ \implies \varphi_m^{\circ}>\dfrac{180^{\circ}}{\pi}\,tot\,\omega_c$
+	\\\\Il sistema riesca ad inseguire un ingresso a frequenza $\omega_{in}\implies\omega_c>\omega_{in}$
+	%\\\\ALTRI DA AGGIUNGERE??????????????
+	
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+	\newpage
+	\appendix
+	
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+	\section{Trasformata di Laplace e trasformata Zeta}\label{trasf lapl}
+	La trasformata di Laplace di una funzione è definita come \[\mathcal{L}[y(t)]=Y(s)=\int_{0}^{+\infty}y(t)\,e^{-st}\,dt\,\, \text{con} \,\, s=\sigma+i\omega\]
+	per cui, per opportune scelte di $\sigma$, la trasformata converge anche per ingressi esponenziali.
+	\\Applicando la trasformata alla risposta all'impulso si ottiene, mediante semplici conti
+	\[\mathcal{L}[g(t)]=\int_{0}^{+\infty}g(t)\,e^{-st}\,dt=c^T\,(sI-A)^{-1}\,b+d=G(s)\]
+	\newline \\
+	La trasformata Zeta di una funzione è definita come
+	\[\mathcal{Z}[y(t)]=Y(z)=\sum_{t=0}^{+\infty}y(t)\,z^{-t} \,\,\text{con} \,\, z=\rho\,e^{i\omega}\]
+	anche in questo caso con opportune scelte di $\rho$ posso fare convergere la serie.
+	\\Applicando la trasformata alla risposta all'impulso si ottiene, mediante semplici conti
+	\[\mathcal{Z}[g(t)]=\sum_{t=0}^{+\infty}y(t)\,z^{-t}=c^T\,(zI-A)^{-1}\,b+d=G(z)\]
+	\newline \\
+	\bigskip
+	La trasformata di Laplace gode di alcune proprietà elencate in seguito
+	\subsubsection*{1)}
+	La convoluzione nel dominio del tempo corrisponde alla moltiplicazione nel dominio della trasformata:
+	\[y(t)=g(t)\circledast u(t)\implies Y(s)=G(s)\,U(s) \]
+	\subsubsection*{2)}
+	La trasformata della derivata è $\mathcal{L}[\dot{y}(t)]=s\,Y(s)-y(0)$ mentre la trasformata dell'integrale è $\mathcal{L}[\int_{0}^t\,y(\tau) d\tau]=\dfrac{Y(s)}{s}$
+	\subsubsection*{3)}
+	Consideriamo segnali $y(t)$ che hanno trasformata $Y(s)$ razionale fratta con grado del denominatore maggiore di quello del numeratore.\\
+	Il teorema del valore iniziale afferma che 
+	\[\lim_{t\to 0^+}y(t)=\lim_{s\to\infty}s\,Y(s)\]
+	mentre il teorema del valore finale afferma che, se le radici del denominatore sono nulle o hanno parte $Re<0$,
+	\[\lim_{t\to \infty}y(t)=\lim_{s\to 0}s\,Y(s)\]
+	\subsubsection*{4)}
+	Alcune trasformate notevoli razionali fratte:
+	\[\mathcal{L}[imp(t)]=1\]
+	\[\mathcal{L}\left[ \dfrac{t^{k-1}e^{\lambda t}}{(k-1)!}\right]=\dfrac{1}{(s-\lambda)^k}\]
+	Notiamo che i segnali con trasformata di Laplace razionale fratta sono la classe dei segnali di tipo modo più l'impulso
+	\newline \\
+	Nella seguente tabella sono elencate alcune trasformate notevoli di uso comune:
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=1 \textwidth]{laplace notev}
+		\caption{\textbf{Trasformate di Laplace notevoli}}
+	\end{figure}
+	La classe dei segnali con trasformata razionale fratta gode di una regola di antitrasformazione che sfrutta gli sviluppi di Heaviside, per i quali si rimanda al prossimo paragrafo.
+	
+	\subsection{Metodo di antitrasformazione di Heaviside}\label{Heaviside}
+	Il metodo degli sviluppi di Heaviside permette di antitrasformare agevolmente gli ingressi che hanno trasformata di Laplace razionale fratta con grado del denominatore maggiore di quello del numeratore.
+	
+	Dato un ingresso $u(t)$ l'uscita forzata del sistema è data da \[y(t)=g(t)\circledast u(t)\] cioè dalla convoluzione della risposta all'impulso $g(t)$ con l'ingresso generico $u(t)$, ma ricordando la proprietà \textbf{1)} del paragrafo precedente possiamo scrivere anche che la trasformata dell'uscita forzata $Y(s)$ è data dal prodotto della funzione di trasferimento (trasformata della risposta all'impulso) con la trasformata dell'ingresso \[Y(s)=G(s)\,U(s)=\dfrac{N_Y}{D_Y}\] dove numeratore e denominatore sono due polinomi e siamo dunque nel caso di trasformata razionale fratta. 
+	\newline Gli sviluppi di Heaviside permettono di scrivere tale rapporto come somma di polinomi che hanno un unico polo si riporta un esempio che chiarifica il procedimento:
+	\begin{align*}
+	\dfrac{2x+1}{(x-2)^2\,(x+5)^3}=\gamma_{00}+\dfrac{\gamma_{11}}{x-2}+\dfrac{\gamma_{12}}{(x-2)^2}+\dfrac{\gamma_{21}}{x+5}+\dfrac{\gamma_{22}}{(x+5)^2}+\dfrac{\gamma_{32}}{(x+5)^3}
+	\end{align*} 
+	con i coefficienti $\gamma$ da determinare risolvendo $d$ equazioni lineari, con $d$ grado del denominatore. Si dimostra che tale sviluppo è unico.
+	\\\\Una volta sviluppata la $Y(s)$, l'antitrasformata è data dalla somma delle antitrasformate dei singoli termini che ricordando \[\mathcal{L}^{-1}\left[\dfrac{\gamma}{(s-\lambda)^k}\right]=\dfrac{\gamma\,t^{k-1}\,e^{\lambda\,t}}{(k-1)!}\]
+	si ricava velocemente.
+	
+	
+\end{document}
